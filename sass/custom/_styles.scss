@@ -36,23 +36,8 @@ aside.sidebar {
 
     &.button {
       $button-bg: lighten($theme-color, 5);
-      /*border-radius: 10px;
-      border-radius:6px;
-      border: 1px solid #dcdcdc;
-      box-shadow:inset 0px 1px 0px 0px #ffffff;
-      background: linear-gradient(lighten($button-bg, 8), $button-bg, darken($button-bg, 11));
-      color: white;
-      font-size: 2em;
-      font-weight: bold;
-      text-shadow: darken($button-bg,50) 0px -1px 1px;
-      padding: 5px 21px 7px;
-      border: none;
-      vertical-align: top;
-      cursor: pointer;*/
 
       box-shadow: inset 0 1px 0 0 lighten($button-bg, 13);
-      background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #79bbff), color-stop(1, #378de5) );
-      background:-moz-linear-gradient( center top, #79bbff 5%, #378de5 100% );
       background: linear-gradient($button-bg, darken($button-bg, 15));
       background-color: $button-bg;
       border-radius:6px;
@@ -123,4 +108,13 @@ article {
     -moz-box-shadow: none;
     box-shadow: none;
   }
+}
+
+body>nav {
+  border: 1px solid $nav-border;
+}
+
+body>div {
+  border: 1px $sidebar-border;
+  border-style: none solid solid;
 }
