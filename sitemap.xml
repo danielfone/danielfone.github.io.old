@@ -1,27 +1,27 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
-        <loc>http://danielfone.github.io/blog/archives/</loc>
+        <loc>http://daniel.fone.net.nz/blog/archives/</loc>
         <lastmod>2013-05-17T08:58:15+12:00</lastmod>
     </url>
     <url>
-        <loc>http://danielfone.github.io/blog/</loc>
+        <loc>http://daniel.fone.net.nz/blog/</loc>
         <lastmod>2013-05-17T08:58:15+12:00</lastmod>
     </url>
     <url>
-        <loc>http://danielfone.github.io/foo.html</loc>
+        <loc>http://daniel.fone.net.nz/foo.html</loc>
         <lastmod>2013-05-17T11:48:33+12:00</lastmod>
     </url>
     <url>
-        <loc>http://danielfone.github.io/hire/</loc>
+        <loc>http://daniel.fone.net.nz/hire/</loc>
         <lastmod>2013-05-17T15:43:47+12:00</lastmod>
     </url>
     <url>
-        <loc>http://danielfone.github.io/</loc>
+        <loc>http://daniel.fone.net.nz/</loc>
         <lastmod>2013-05-17T14:30:07+12:00</lastmod>
     </url>
     <url>
-        <loc>http://danielfone.github.io/robots.txt</loc>
+        <loc>http://daniel.fone.net.nz/robots.txt</loc>
         <lastmod>2013-05-17T08:58:15+12:00</lastmod>
     </url>
 </urlset>

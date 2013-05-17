@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Daniel Fone]]></title>
-  <link href="http://danielfone.github.io/atom.xml" rel="self"/>
-  <link href="http://danielfone.github.io/"/>
-  <updated>2013-05-17T15:51:11+12:00</updated>
-  <id>http://danielfone.github.io/</id>
+  <link href="http://daniel.fone.net.nz/atom.xml" rel="self"/>
+  <link href="http://daniel.fone.net.nz/"/>
+  <updated>2013-05-17T16:40:07+12:00</updated>
+  <id>http://daniel.fone.net.nz/</id>
   <author>
     <name><![CDATA[Daniel Fone]]></name>
     
