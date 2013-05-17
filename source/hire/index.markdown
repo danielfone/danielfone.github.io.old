@@ -11,7 +11,7 @@ let me know and I'll schedule them in as soon as possible.
 
 {% img left inline /images/noun-project-dollar.svg %}
 I'm also happy to do **fixed price quotes**
-if you project is suitable and well spec'ed.
+if your project is suitable and well spec'ed.
 I can work with you to develop a spec if needed.
 
 {% img left inline /images/noun-project-clock.svg %}
