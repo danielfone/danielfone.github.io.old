@@ -4,8 +4,10 @@
 $page-bg: white;
 $noise-bg: none;
 
+$theme-color: #67abf7;
+
 $header-bg: white;
-$title-color: #67abf7;
+$title-color: $theme-color;
 $subtitle-color: #aaa;
 
 $nav-bg: #ccc;
@@ -15,7 +17,6 @@ $nav-border: darken($nav-bg, 10);
 $nav-border-top: $nav-border;
 $nav-border-bottom: $nav-border;
 
-
 $footer-color: #ddd;
 $footer-bg: white;
 $footer-bg-front: none;
@@ -23,6 +24,12 @@ $footer-bg-back: none;
 $footer-border-top: #eee;
 $footer-link-color: $footer-color;
 
+// Main Link Colors
+$link-color: $theme-color;
+$link-color-hover: $link-color;
+$link-color-visited: $link-color;
+$link-color-active: $link-color;
+$sidebar-link-color-subdued: $link-color;
 
 /* To use the light Solarized highlighting theme uncomment the following line */
 //$solarized: light;

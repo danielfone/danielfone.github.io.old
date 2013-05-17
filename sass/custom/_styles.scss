@@ -13,3 +13,17 @@ header img {
     padding-right: 1em;
   }
 }
+
+a {
+  text-decoration: none;
+  color: $link-color;
+  @include transition(color 0);
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+aside.sidebar a {
+  color: $link-color;
+}
