@@ -1,29 +1,124 @@
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Daniel Fone]]></title>
-  <link href="http://daniel.fone.net.nz/atom.xml" rel="self"/>
-  <link href="http://daniel.fone.net.nz/"/>
-  <updated>2013-05-19T19:27:48+12:00</updated>
-  <id>http://daniel.fone.net.nz/</id>
-  <author>
-    <name><![CDATA[Daniel Fone]]></name>
-    
-  </author>
-  <generator uri="http://octopress.org/">Octopress</generator>
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Desire Paths in Web UI - Daniel Fone</title>
+  <meta name="author" content="Daniel Fone">
 
   
-  <entry>
-    <title type="html"><![CDATA[Desire Paths in Web UI]]></title>
-    <link href="http://daniel.fone.net.nz/blog/2013/05/19/desire-paths-in-web-ui/"/>
-    <updated>2013-05-19T16:50:00+12:00</updated>
-    <id>http://daniel.fone.net.nz/blog/2013/05/19/desire-paths-in-web-ui</id>
-    <content type="html"><![CDATA[<p>Slides and a rough transcription from my lightning talk
+  <meta name="description" content="Slides and a rough transcription from my lightning talk
+at the @chchruby meetup on Thursday, 16th May, 2013. Desire Paths in Web UIs Hi everyone, I& &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://daniel.fone.net.nz/blog/2013/05/19/desire-paths-in-web-ui">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Daniel Fone" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<script type="text/javascript" charset="utf-8">
+  function addSidebarToggler() {}
+</script>
+<!-- jQuery Form Plugin -->
+<script src="http://malsup.github.com/jquery.form.js"></script>
+<!-- jQuery Form Validation Plugin -->
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
+<script src="/javascripts/google_form.js"></script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-41009873-1', 'fone.net.nz');
+  ga('send', 'pageview');
+</script>
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><img class="left" src="/images/blue-dot.png" width="100">
+
+<h1>
+  <a href="/">Daniel Fone</a>
+</h1>
+
+  <h2>Ruby on Rails Engineer</h2>
+
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:daniel.fone.net.nz" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">About</a></li>
+  <li><a href="/blog/">Blog</a></li>
+  <li><a href="/hire">Hire Me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Desire Paths in Web UI</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-19T16:50:00+12:00" pubdate data-updated="true">May 19<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Slides and a rough transcription from my lightning talk
 at the <a href="https://twitter.com/chchruby">@chchruby</a> meetup on Thursday, 16th May, 2013.</p>
 
 <h2>Desire Paths in Web UIs</h2>
 
-<p><img src="http://daniel.fone.net.nz/images/desire-paths/slide.001.jpg"></p>
+<p><img src="/images/desire-paths/slide.001.jpg"></p>
 
 <blockquote><p>Hi everyone, I&rsquo;m Daniel Fone
 I&rsquo;m a freelance Rails engineer.
@@ -35,7 +130,7 @@ than a technical talk
 so feel free to disagree — I don’t think there’s right and wrong —
 but hopefully these musings are helpful to some of you</p></blockquote>
 
-<p><img src="http://daniel.fone.net.nz/images/desire-paths/slide.002.jpg"></p>
+<p><img src="/images/desire-paths/slide.002.jpg"></p>
 
 <blockquote><p>Ok, so “desire paths in web UI”</p>
 
@@ -51,10 +146,10 @@ Ok, who knows what a web UI is?</p>
   so daddy takes the kids for endless walks in the parks around where we live. There’s heaps.
 And everywhere we go we see these things:</p></blockquote>
 
-<p><img src="http://daniel.fone.net.nz/images/desire-paths/slide.003.jpg">
-<img src="http://daniel.fone.net.nz/images/desire-paths/slide.004.jpg">
-<img src="http://daniel.fone.net.nz/images/desire-paths/slide.005.jpg">
-<img src="http://daniel.fone.net.nz/images/desire-paths/slide.006.jpg"></p>
+<p><img src="/images/desire-paths/slide.003.jpg">
+<img src="/images/desire-paths/slide.004.jpg">
+<img src="/images/desire-paths/slide.005.jpg">
+<img src="/images/desire-paths/slide.006.jpg"></p>
 
 <blockquote><p>Those tracks you see between trees, between paved footpaths etc.
 that’s a desire path</p>
@@ -64,7 +159,7 @@ turns out everyone wants to walk “over here”</p>
 
 <p>Totally different story time:</p></blockquote>
 
-<p><img src="http://daniel.fone.net.nz/images/desire-paths/slide.007.jpg"></p>
+<p><img src="/images/desire-paths/slide.007.jpg"></p>
 
 <blockquote><p> ages ago I built a search feature for a client&rsquo;s in-house logistics system.
 kinda omnisearch, searches all these different fields, fuzzy matches etc.
@@ -81,13 +176,13 @@ So they just used the browser’s search function.</p>
 <p>  And it got me thinking…
   These two stories are actually about the same thing!</p></blockquote>
 
-<p><img src="http://daniel.fone.net.nz/images/desire-paths/slide.008.jpg"></p>
+<p><img src="/images/desire-paths/slide.008.jpg"></p>
 
 <blockquote><p>Because really, a desire path is
 the disconnect between a <strong>designer&rsquo;s intention</strong>
 and a <strong>user&rsquo;s desires</strong></p></blockquote>
 
-<p><img src="http://daniel.fone.net.nz/images/desire-paths/slide.009.jpg"></p>
+<p><img src="/images/desire-paths/slide.009.jpg"></p>
 
 <blockquote><p>Here’s the dilema for us as application developers</p>
 
@@ -105,7 +200,7 @@ and then all they know they want something slightly different.</p>
 
 <p>So what are we to do?</p></blockquote>
 
-<p><img src="http://daniel.fone.net.nz/images/desire-paths/slide.010.jpg"></p>
+<p><img src="/images/desire-paths/slide.010.jpg"></p>
 
 <blockquote><p>Here’s my pet theory…</p>
 
@@ -119,14 +214,14 @@ they can take shortcuts when they know where they’re going</p>
 
 <p>I know what you’re thinking at this point…</p></blockquote>
 
-<p><img src="http://daniel.fone.net.nz/images/desire-paths/slide.011.jpg"></p>
+<p><img src="/images/desire-paths/slide.011.jpg"></p>
 
 <blockquote><p>Yeah. paths, corridors, muddy tracks in the ground. WAT.</p>
 
 <p>So let’s put some legs on this.
 Technically, what does this look like?</p></blockquote>
 
-<p><img src="http://daniel.fone.net.nz/images/desire-paths/slide.012.jpg"></p>
+<p><img src="/images/desire-paths/slide.012.jpg"></p>
 
 <blockquote><ol>
 <li><p>Display more data, not less. Perhaps you have to hide it behind a “show more” link. But if you give it to the user, they can do something with it. This is the difference between omitting data and hiding it. I’ll come back to this in a sec.</p></li>
@@ -137,7 +232,7 @@ Technically, what does this look like?</p></blockquote>
 
 <p>There&rsquo;s a caveat though…</p></blockquote>
 
-<p><img src="http://daniel.fone.net.nz/images/desire-paths/slide.013.jpg"></p>
+<p><img src="/images/desire-paths/slide.013.jpg"></p>
 
 <blockquote><p>Letting users make desire paths doesn’t mean making none of your own paths in the UI.
 You’ve still got to make decisions.</p>
@@ -146,7 +241,7 @@ You’ve still got to make decisions.</p>
 But as users become comfortable, they want the space to find their own shortcuts etc.
 So it is good to <strong>hide</strong> all the unneeded data, but it’s not good to <strong>omit</strong> it entirely.</p></blockquote>
 
-<p><img src="http://daniel.fone.net.nz/images/desire-paths/slide.014.jpg"></p>
+<p><img src="/images/desire-paths/slide.014.jpg"></p>
 
 <blockquote><p>For bonus points…</p>
 
@@ -160,7 +255,7 @@ Or — heaven forbid — talk to your users!</p>
 
 <p>So to recap:</p></blockquote>
 
-<p><img src="http://daniel.fone.net.nz/images/desire-paths/slide.015.jpg"></p>
+<p><img src="/images/desire-paths/slide.015.jpg"></p>
 
 <blockquote><ol>
 <li>Let your users figure out how to do cool stuff with your app.</li>
@@ -169,7 +264,7 @@ Or — heaven forbid — talk to your users!</p>
 </ol>
 </blockquote>
 
-<p><img src="http://daniel.fone.net.nz/images/desire-paths/slide.016.jpg"></p>
+<p><img src="/images/desire-paths/slide.016.jpg"></p>
 
 <blockquote><p>But basically…</p>
 
@@ -177,10 +272,102 @@ Or — heaven forbid — talk to your users!</p>
 
 <p>Whatever that means for you.</p></blockquote>
 
-<p><img src="http://daniel.fone.net.nz/images/desire-paths/slide.017.jpg"></p>
+<p><img src="/images/desire-paths/slide.017.jpg"></p>
 
 <blockquote><p>THANKS</p></blockquote>
-]]></content>
-  </entry>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
   
-</feed>
+
+<span class="byline author vcard">Posted by <span class="fn">Daniel Fone</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-19T16:50:00+12:00" pubdate data-updated="true">May 19<span>th</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <p>
+    <a href="/hire" class="button">Hire me</a>
+  </p>
+</section>
+<section>
+  <img class="right" src="http://www.gravatar.com/avatar/5efc2a040a61cb22107bcfcecd58454c.png">
+  <h1>About Me</h1>
+  <p>
+    I'm a freelance Ruby on Rails engineer,
+    based in Christchurch, New Zealand.<br>
+    <a href="https://github.com/danielfone">Github profile</a>
+  </p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/05/19/desire-paths-in-web-ui/">Desire Paths in Web UI</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Daniel Fone -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
