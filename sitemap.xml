@@ -2,15 +2,21 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>http://daniel.fone.net.nz/blog/2013/05/19/desire-paths-in-web-ui/</loc>
-        <lastmod>2013-05-19T19:26:44+12:00</lastmod>
+        <lastmod>2013-05-19T20:51:34+12:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://daniel.fone.net.nz/blog/2013/05/19/managing-heroku-config-vars-from-the-web/
+        </loc>
+        <lastmod>2013-05-19T22:11:16+12:00</lastmod>
     </url>
     <url>
         <loc>http://daniel.fone.net.nz/blog/archives/</loc>
-        <lastmod>2013-05-19T19:26:44+12:00</lastmod>
+        <lastmod>2013-05-19T22:11:16+12:00</lastmod>
     </url>
     <url>
         <loc>http://daniel.fone.net.nz/blog/</loc>
-        <lastmod>2013-05-19T19:26:44+12:00</lastmod>
+        <lastmod>2013-05-19T22:11:16+12:00</lastmod>
     </url>
     <url>
         <loc>http://daniel.fone.net.nz/foo.html</loc>
@@ -22,7 +28,7 @@
     </url>
     <url>
         <loc>http://daniel.fone.net.nz/</loc>
-        <lastmod>2013-05-19T19:26:44+12:00</lastmod>
+        <lastmod>2013-05-19T22:11:16+12:00</lastmod>
     </url>
     <url>
         <loc>http://daniel.fone.net.nz/robots.txt</loc>

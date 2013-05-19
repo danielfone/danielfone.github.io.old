@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Daniel Fone</title>
+  <title>Managing Heroku Config Vars from the Web - Daniel Fone</title>
   <meta name="author" content="Daniel Fone">
 
   
-  <meta name="description" content="I&#8217;m a freelance Ruby on Rails engineer, who loves working with great people to make interesting things. If you’re creating something &hellip;">
+  <meta name="description" content="tl;dr The heroku_config_vars Rails engine provides a secure web interface for managing an application&rsquo;s Heroku configuration. The Problem &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://daniel.fone.net.nz">
+  <link rel="canonical" href="http://daniel.fone.net.nz/blog/2013/05/19/managing-heroku-config-vars-from-the-web">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Daniel Fone" type="application/atom+xml">
@@ -85,35 +85,116 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
-  <blockquote>
-  <p>
-    I&#8217;m a freelance Ruby on Rails engineer,
-    who loves working with <strong>great people</strong>
-    to make <strong>interesting things</strong>.
-  </p>
-  <p>
-    If you’re creating something interesting,
-    get in touch! You can probably
-    <a href="/hire">hire me</a>.
-  </p>
-</blockquote>
+  <header>
+    
+      <h1 class="entry-title">Managing Heroku Config Vars From the Web</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
 
   
-    <footer>
+
+
+<time datetime="2013-05-19T20:50:00+12:00" pubdate data-updated="true">May 19<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><strong>tl;dr</strong> The <a href="https://github.com/danielfone/heroku_config_vars">heroku_config_vars</a> Rails engine provides a secure web interface for managing an application&rsquo;s Heroku configuration.</p>
+
+<h2>The Problem</h2>
+
+<p><a href="heroku.com">Heroku</a> don&rsquo;t provide a way to manage an application&rsquo;s <a href="https://devcenter.heroku.com/articles/config-vars">configuration variables</a> through a web interface. Although an application&rsquo;s ENV shouldn&rsquo;t really be used for domain-specific configuration or settings that change frequently, sometimes it&rsquo;s a hassle to drop into a console when doing something as trivial as updating SMTP settings or cycling OAuth tokens.</p>
+
+<p>What I really want to achieve is turning this:</p>
+
+<pre><code>$ heroku config:set GITHUB_USERNAME=joesmith
+Adding config vars and restarting myapp... done, v12
+GITHUB_USERNAME: joesmith
+</code></pre>
+
+<p>into this:</p>
+
+<p><img src="/images/2013-05-19-managing-heroku-config-vars-from-the-web/heroku-config-update.png"></p>
+
+<h2>The Solution</h2>
+
+<p>The <a href="https://github.com/danielfone/heroku_config_vars">heroku_config_vars</a> Rails engine provides a web interface for managing an application&rsquo;s Heroku configuration. This makes it possible for administrators without CLI access to manage their Heroku configuration.</p>
+
+<p><img src="/images/2013-05-19-managing-heroku-config-vars-from-the-web/screenshot-1.png">
+<img src="/images/2013-05-19-managing-heroku-config-vars-from-the-web/screenshot-2.png">
+<img src="/images/2013-05-19-managing-heroku-config-vars-from-the-web/screenshot-3.png"></p>
+
+<p>Installation and usage instructions can be found on <a href="https://github.com/danielfone/heroku_config_vars">github</a>. Feedback, questions, bugs, PRs are welcome!</p>
+
+<p>Enjoy.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
       
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Daniel Fone</span></span>
+
       
-        <div class="sharing">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-19T20:50:00+12:00" pubdate data-updated="true">May 19<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/gems/'>Gems</a>, <a class='category' href='/blog/categories/heroku/'>Heroku</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
   
   
   
 </div>
 
+    
+    <p class="meta">
       
-    </footer>
-  
+        <a class="basic-alignment left" href="/blog/2013/05/19/desire-paths-in-web-ui/" title="Previous Post: Desire Paths in Web UI">&laquo; Desire Paths in Web UI</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -166,7 +247,10 @@
       var disqus_shortname = 'danielfone';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://daniel.fone.net.nz/blog/2013/05/19/managing-heroku-config-vars-from-the-web/';
+        var disqus_url = 'http://daniel.fone.net.nz/blog/2013/05/19/managing-heroku-config-vars-from-the-web/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

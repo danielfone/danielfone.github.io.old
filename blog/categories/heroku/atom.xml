@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Heroku | Daniel Fone]]></title>
+  <link href="http://daniel.fone.net.nz/blog/categories/heroku/atom.xml" rel="self"/>
+  <link href="http://daniel.fone.net.nz/"/>
+  <updated>2013-05-19T22:14:50+12:00</updated>
+  <id>http://daniel.fone.net.nz/</id>
+  <author>
+    <name><![CDATA[Daniel Fone]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Managing Heroku Config Vars from the Web]]></title>
+    <link href="http://daniel.fone.net.nz/blog/2013/05/19/managing-heroku-config-vars-from-the-web/"/>
+    <updated>2013-05-19T20:50:00+12:00</updated>
+    <id>http://daniel.fone.net.nz/blog/2013/05/19/managing-heroku-config-vars-from-the-web</id>
+    <content type="html"><![CDATA[<p><strong>tl;dr</strong> The <a href="https://github.com/danielfone/heroku_config_vars">heroku_config_vars</a> Rails engine provides a secure web interface for managing an application&rsquo;s Heroku configuration.</p>
+
+<h2>The Problem</h2>
+
+<p><a href="heroku.com">Heroku</a> don&rsquo;t provide a way to manage an application&rsquo;s <a href="https://devcenter.heroku.com/articles/config-vars">configuration variables</a> through a web interface. Although an application&rsquo;s ENV shouldn&rsquo;t really be used for domain-specific configuration or settings that change frequently, sometimes it&rsquo;s a hassle to drop into a console when doing something as trivial as updating SMTP settings or cycling OAuth tokens.</p>
+
+<p>What I really want to achieve is turning this:</p>
+
+<pre><code>$ heroku config:set GITHUB_USERNAME=joesmith
+Adding config vars and restarting myapp... done, v12
+GITHUB_USERNAME: joesmith
+</code></pre>
+
+<p>into this:</p>
+
+<p><img src="/images/2013-05-19-managing-heroku-config-vars-from-the-web/heroku-config-update.png"></p>
+
+<h2>The Solution</h2>
+
+<p>The <a href="https://github.com/danielfone/heroku_config_vars">heroku_config_vars</a> Rails engine provides a web interface for managing an application&rsquo;s Heroku configuration. This makes it possible for administrators without CLI access to manage their Heroku configuration.</p>
+
+<p><img src="/images/2013-05-19-managing-heroku-config-vars-from-the-web/screenshot-1.png">
+<img src="/images/2013-05-19-managing-heroku-config-vars-from-the-web/screenshot-2.png">
+<img src="/images/2013-05-19-managing-heroku-config-vars-from-the-web/screenshot-3.png"></p>
+
+<p>Installation and usage instructions can be found on <a href="https://github.com/danielfone/heroku_config_vars">github</a>. Feedback, questions, bugs, PRs are welcome!</p>
+
+<p>Enjoy.</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Daniel Fone]]></title>
-  <link href="http://daniel.fone.net.nz/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Presentations | Daniel Fone]]></title>
+  <link href="http://daniel.fone.net.nz/blog/categories/presentations/atom.xml" rel="self"/>
   <link href="http://daniel.fone.net.nz/"/>
   <updated>2013-05-19T22:14:50+12:00</updated>
   <id>http://daniel.fone.net.nz/</id>
@@ -14,42 +14,6 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Managing Heroku Config Vars from the Web]]></title>
-    <link href="http://daniel.fone.net.nz/blog/2013/05/19/managing-heroku-config-vars-from-the-web/"/>
-    <updated>2013-05-19T20:50:00+12:00</updated>
-    <id>http://daniel.fone.net.nz/blog/2013/05/19/managing-heroku-config-vars-from-the-web</id>
-    <content type="html"><![CDATA[<p><strong>tl;dr</strong> The <a href="https://github.com/danielfone/heroku_config_vars">heroku_config_vars</a> Rails engine provides a secure web interface for managing an application&rsquo;s Heroku configuration.</p>
-
-<h2>The Problem</h2>
-
-<p><a href="heroku.com">Heroku</a> don&rsquo;t provide a way to manage an application&rsquo;s <a href="https://devcenter.heroku.com/articles/config-vars">configuration variables</a> through a web interface. Although an application&rsquo;s ENV shouldn&rsquo;t really be used for domain-specific configuration or settings that change frequently, sometimes it&rsquo;s a hassle to drop into a console when doing something as trivial as updating SMTP settings or cycling OAuth tokens.</p>
-
-<p>What I really want to achieve is turning this:</p>
-
-<pre><code>$ heroku config:set GITHUB_USERNAME=joesmith
-Adding config vars and restarting myapp... done, v12
-GITHUB_USERNAME: joesmith
-</code></pre>
-
-<p>into this:</p>
-
-<p><img src="http://daniel.fone.net.nz/images/2013-05-19-managing-heroku-config-vars-from-the-web/heroku-config-update.png"></p>
-
-<h2>The Solution</h2>
-
-<p>The <a href="https://github.com/danielfone/heroku_config_vars">heroku_config_vars</a> Rails engine provides a web interface for managing an application&rsquo;s Heroku configuration. This makes it possible for administrators without CLI access to manage their Heroku configuration.</p>
-
-<p><img src="http://daniel.fone.net.nz/images/2013-05-19-managing-heroku-config-vars-from-the-web/screenshot-1.png">
-<img src="http://daniel.fone.net.nz/images/2013-05-19-managing-heroku-config-vars-from-the-web/screenshot-2.png">
-<img src="http://daniel.fone.net.nz/images/2013-05-19-managing-heroku-config-vars-from-the-web/screenshot-3.png"></p>
-
-<p>Installation and usage instructions can be found on <a href="https://github.com/danielfone/heroku_config_vars">github</a>. Feedback, questions, bugs, PRs are welcome!</p>
-
-<p>Enjoy.</p>
-]]></content>
-  </entry>
-  
-  <entry>
     <title type="html"><![CDATA[Desire Paths in Web UI]]></title>
     <link href="http://daniel.fone.net.nz/blog/2013/05/19/desire-paths-in-web-ui/"/>
     <updated>2013-05-19T16:50:00+12:00</updated>
@@ -59,7 +23,7 @@ at the <a href="https://twitter.com/chchruby">@chchruby</a> meetup on Thursday, 
 
 <h2>Desire Paths in Web UIs</h2>
 
-<p><img src="http://daniel.fone.net.nz/images/desire-paths/slide.001.jpg"></p>
+<p><img src="/images/desire-paths/slide.001.jpg"></p>
 
 <blockquote><p>Hi everyone, I&rsquo;m Daniel Fone
 I&rsquo;m a freelance Rails engineer.
@@ -71,7 +35,7 @@ than a technical talk
 so feel free to disagree — I don’t think there’s right and wrong —
 but hopefully these musings are helpful to some of you</p></blockquote>
 
-<p><img src="http://daniel.fone.net.nz/images/desire-paths/slide.002.jpg"></p>
+<p><img src="/images/desire-paths/slide.002.jpg"></p>
 
 <blockquote><p>Ok, so “desire paths in web UI”</p>
 
@@ -87,10 +51,10 @@ Ok, who knows what a web UI is?</p>
   so daddy takes the kids for endless walks in the parks around where we live. There’s heaps.
 And everywhere we go we see these things:</p></blockquote>
 
-<p><img src="http://daniel.fone.net.nz/images/desire-paths/slide.003.jpg">
-<img src="http://daniel.fone.net.nz/images/desire-paths/slide.004.jpg">
-<img src="http://daniel.fone.net.nz/images/desire-paths/slide.005.jpg">
-<img src="http://daniel.fone.net.nz/images/desire-paths/slide.006.jpg"></p>
+<p><img src="/images/desire-paths/slide.003.jpg">
+<img src="/images/desire-paths/slide.004.jpg">
+<img src="/images/desire-paths/slide.005.jpg">
+<img src="/images/desire-paths/slide.006.jpg"></p>
 
 <blockquote><p>Those tracks you see between trees, between paved footpaths etc.
 that’s a desire path</p>
@@ -100,7 +64,7 @@ turns out everyone wants to walk “over here”</p>
 
 <p>Totally different story time:</p></blockquote>
 
-<p><img src="http://daniel.fone.net.nz/images/desire-paths/slide.007.jpg"></p>
+<p><img src="/images/desire-paths/slide.007.jpg"></p>
 
 <blockquote><p> ages ago I built a search feature for a client&rsquo;s in-house logistics system.
 kinda omnisearch, searches all these different fields, fuzzy matches etc.
@@ -117,13 +81,13 @@ So they just used the browser’s search function.</p>
 <p>  And it got me thinking…
   These two stories are actually about the same thing!</p></blockquote>
 
-<p><img src="http://daniel.fone.net.nz/images/desire-paths/slide.008.jpg"></p>
+<p><img src="/images/desire-paths/slide.008.jpg"></p>
 
 <blockquote><p>Because really, a desire path is
 the disconnect between a <strong>designer&rsquo;s intention</strong>
 and a <strong>user&rsquo;s desires</strong></p></blockquote>
 
-<p><img src="http://daniel.fone.net.nz/images/desire-paths/slide.009.jpg"></p>
+<p><img src="/images/desire-paths/slide.009.jpg"></p>
 
 <blockquote><p>Here’s the dilema for us as application developers</p>
 
@@ -141,7 +105,7 @@ and then all they know they want something slightly different.</p>
 
 <p>So what are we to do?</p></blockquote>
 
-<p><img src="http://daniel.fone.net.nz/images/desire-paths/slide.010.jpg"></p>
+<p><img src="/images/desire-paths/slide.010.jpg"></p>
 
 <blockquote><p>Here’s my pet theory…</p>
 
@@ -155,14 +119,14 @@ they can take shortcuts when they know where they’re going</p>
 
 <p>I know what you’re thinking at this point…</p></blockquote>
 
-<p><img src="http://daniel.fone.net.nz/images/desire-paths/slide.011.jpg"></p>
+<p><img src="/images/desire-paths/slide.011.jpg"></p>
 
 <blockquote><p>Yeah. paths, corridors, muddy tracks in the ground. WAT.</p>
 
 <p>So let’s put some legs on this.
 Technically, what does this look like?</p></blockquote>
 
-<p><img src="http://daniel.fone.net.nz/images/desire-paths/slide.012.jpg"></p>
+<p><img src="/images/desire-paths/slide.012.jpg"></p>
 
 <blockquote><ol>
 <li><p>Display more data, not less. Perhaps you have to hide it behind a “show more” link. But if you give it to the user, they can do something with it. This is the difference between omitting data and hiding it. I’ll come back to this in a sec.</p></li>
@@ -173,7 +137,7 @@ Technically, what does this look like?</p></blockquote>
 
 <p>There&rsquo;s a caveat though…</p></blockquote>
 
-<p><img src="http://daniel.fone.net.nz/images/desire-paths/slide.013.jpg"></p>
+<p><img src="/images/desire-paths/slide.013.jpg"></p>
 
 <blockquote><p>Letting users make desire paths doesn’t mean making none of your own paths in the UI.
 You’ve still got to make decisions.</p>
@@ -182,7 +146,7 @@ You’ve still got to make decisions.</p>
 But as users become comfortable, they want the space to find their own shortcuts etc.
 So it is good to <strong>hide</strong> all the unneeded data, but it’s not good to <strong>omit</strong> it entirely.</p></blockquote>
 
-<p><img src="http://daniel.fone.net.nz/images/desire-paths/slide.014.jpg"></p>
+<p><img src="/images/desire-paths/slide.014.jpg"></p>
 
 <blockquote><p>For bonus points…</p>
 
@@ -196,7 +160,7 @@ Or — heaven forbid — talk to your users!</p>
 
 <p>So to recap:</p></blockquote>
 
-<p><img src="http://daniel.fone.net.nz/images/desire-paths/slide.015.jpg"></p>
+<p><img src="/images/desire-paths/slide.015.jpg"></p>
 
 <blockquote><ol>
 <li>Let your users figure out how to do cool stuff with your app.</li>
@@ -205,7 +169,7 @@ Or — heaven forbid — talk to your users!</p>
 </ol>
 </blockquote>
 
-<p><img src="http://daniel.fone.net.nz/images/desire-paths/slide.016.jpg"></p>
+<p><img src="/images/desire-paths/slide.016.jpg"></p>
 
 <blockquote><p>But basically…</p>
 
@@ -213,7 +177,7 @@ Or — heaven forbid — talk to your users!</p>
 
 <p>Whatever that means for you.</p></blockquote>
 
-<p><img src="http://daniel.fone.net.nz/images/desire-paths/slide.017.jpg"></p>
+<p><img src="/images/desire-paths/slide.017.jpg"></p>
 
 <blockquote><p>THANKS</p></blockquote>
 ]]></content>
