@@ -3,7 +3,7 @@ layout: post
 title: "Desire Paths in Web UI"
 date: 2013-05-19 16:50
 comments: true
-categories: 
+categories: [chchruby, Presentations]
 ---
 
 Slides and a rough transcription from my lightning talk
