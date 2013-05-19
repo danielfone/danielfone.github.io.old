@@ -118,3 +118,7 @@ body>div {
   border: 1px $sidebar-border;
   border-style: none solid solid;
 }
+
+article header p.meta {
+  position: static;
+}
