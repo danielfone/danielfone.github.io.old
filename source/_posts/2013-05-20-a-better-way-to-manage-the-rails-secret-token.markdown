@@ -64,7 +64,9 @@ By hardcoding the production secret token in the code base, the following attack
 
 If an attacker wishes to obtain the application's secret token, there are vastly more opportunities when the secret token is stored in the code.
 
-The prevalence of this bad practice can be seen by searching [Github](https://github.com/search?l=Ruby&p=1&q=application.config.secret_token+%3D+%27&ref=searchbar&type=Code) or [Google](https://www.google.co.nz/search?q=secret_token.rb+-ENV+site%3Agithub.com). It is trivial to gain administrative access to many live applications simply by browsing those search results.
+The prevalence of this bad practice can be seen by searching [Github](https://github.com/search?l=Ruby&p=1&q=application.config.secret_token+%3D+%27&ref=searchbar&type=Code) or [Google](https://www.google.co.nz/search?q=secret_token.rb+-ENV+site%3Agithub.com). It's trivial to gain administrative access to many live applications simply by browsing those search results.
+
+*Update: [Bryan Helmkamp](http://twitter.com/brynary) helpfully [notes below](#comment-902646816) that with these tokens it's actually possible to execute arbitrary code on the web server.*
 
 ## Loading Rails configuration from the environment
 
