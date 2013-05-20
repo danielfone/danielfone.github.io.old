@@ -4,7 +4,7 @@
   <title><![CDATA[Daniel Fone]]></title>
   <link href="http://daniel.fone.net.nz/atom.xml" rel="self"/>
   <link href="http://daniel.fone.net.nz/"/>
-  <updated>2013-05-20T15:18:42+12:00</updated>
+  <updated>2013-05-20T16:53:10+12:00</updated>
   <id>http://daniel.fone.net.nz/</id>
   <author>
     <name><![CDATA[Daniel Fone]]></name>
@@ -99,7 +99,9 @@
 
 <p>If an attacker wishes to obtain the application&rsquo;s secret token, there are vastly more opportunities when the secret token is stored in the code.</p>
 
-<p>The prevalence of this bad practice can be seen by searching <a href="https://github.com/search?l=Ruby&amp;p=1&amp;q=application.config.secret_token+%3D+%27&amp;ref=searchbar&amp;type=Code">Github</a> or <a href="https://www.google.co.nz/search?q=secret_token.rb+-ENV+site%3Agithub.com">Google</a>. It is trivial to gain administrative access to many live applications simply by browsing those search results.</p>
+<p>The prevalence of this bad practice can be seen by searching <a href="https://github.com/search?l=Ruby&amp;p=1&amp;q=application.config.secret_token+%3D+%27&amp;ref=searchbar&amp;type=Code">Github</a> or <a href="https://www.google.co.nz/search?q=secret_token.rb+-ENV+site%3Agithub.com">Google</a>. It&rsquo;s trivial to gain administrative access to many live applications simply by browsing those search results.</p>
+
+<p><em>Update: <a href="http://twitter.com/brynary">Bryan Helmkamp</a> helpfully <a href="#comment-902646816">notes below</a> that with these tokens it&rsquo;s actually possible to execute arbitrary code on the web server.</em></p>
 
 <h2>Loading Rails configuration from the environment</h2>
 
