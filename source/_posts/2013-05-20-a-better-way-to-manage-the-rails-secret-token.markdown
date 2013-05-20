@@ -6,7 +6,7 @@ comments: true
 categories: Heroku Security
 ---
 
-**tl;dr** Don't hardcode secret tokens. Load them from the environment like this:
+**tl;dr** Don't hardcode secret tokens. Load them from the environment like this…
 
 {% codeblock /config/initializers/secret_token.rb %}
 # Be sure to restart your server when you modify this file.
@@ -21,8 +21,9 @@ else
   ENV['SECRET_TOKEN']
 end
 {% endcodeblock %}
+… and use the [Dotenv](https://github.com/bkeepers/dotenv) gem in production if needed.
 
-## Insecure Defaults
+## Insecure defaults
 
 When you create a new Rails project, one of the files created will be `/config/initializers/secret_token.rb`. This file will look something like this:
 
@@ -36,28 +37,38 @@ When you create a new Rails project, one of the files created will be `/config/i
 MyApp::Application.config.secret_token = '3eb6db5a9026c547c72708438d496d942e976b252138db7e4e0ee5edd7539457d3ed0fa02ee5e7179420ce5290462018591adaf5f42adcf855da04877827def2'
 {% endcodeblock %}
 
-This token is used for…
+This token is used to sign cookies that the application sets. Without this, it's impossible to trust cookies that the browser sends, and hence difficult to rely on session based authentication.
+
+## Why this is bad
+
+Firstly, hard-coding configuration conflates config and code. Although this may not cause much pain in a very simple context, as the application and infrastructure grow this anti-pattern will make configuration increasingly complex and error prone.
 
 {% blockquote The Twelve-Factor App http://www.12factor.net/config III. Config %}
-
-An app’s config is everything that is likely to vary between deploys (staging, production, developer environments, etc). This includes:
-
-Resource handles to the database, Memcached, and other backing services
-Credentials to external services such as Amazon S3 or Twitter
-Per-deploy values such as the canonical hostname for the deploy
-Apps sometimes store config as constants in the code. This is a violation of twelve-factor, which requires strict separation of config from code. Config varies substantially across deploys, code does not.
-
-A litmus test for whether an app has all config correctly factored out of the code is whether the codebase could be made open source at any moment, without compromising any credentials.
-
+An app’s config is everything that is likely to vary between deploys (staging, production, developer environments, etc). … Apps sometimes store config as constants in the code. This is a violation of twelve-factor, which requires strict separation of config from code. Config varies substantially across deploys, code does not.
 {% endblockquote %}
 
-link to github search
+### Security risk
 
-In order to set the secret_token securely, we want to load it from the application's environment.
+More importantly though is the security implication. Knowing the secret token allows an attacker to trivially impersonate any user in the application.
 
-## Loading Rails Configuration from the Environment
+The only system that *needs* to know the production secret token is the production infrastructure. In this case, the attack vector is limited to the production infrastructure, which is likely to be the most secure part of the infrastructure anyway.
 
-The simplest method is to replace the hardcoded token with a reference to Ruby's `ENV`:
+By hardcoding the production secret token in the code base, the following attack vectors are opened:
+
+* Every developer that has had access to the code base
+* Every development workstation that has a local copy of the code
+* The source control repository (whether private or 3rd-party e.g. Github)
+* The continuous integration server
+* Any 3rd-party services that have access to the source code, e.g. [Code Climate](https://codeclimate.com/) or [Gemnasium](https://gemnasium.com/)
+* The people involved with all of the above services
+
+If an attacker wishes to obtain the application's secret token, there are vastly more opportunities when the secret token is stored in the code.
+
+The prevalence of this bad practice can be seen by searching [Github](https://github.com/search?l=Ruby&p=1&q=application.config.secret_token+%3D+%27&ref=searchbar&type=Code) or [Google](https://www.google.co.nz/search?q=secret_token.rb+-ENV+site%3Agithub.com). It is trivial to gain administrative access to many live applications simply by browsing those search results.
+
+## Loading Rails configuration from the environment
+
+In order to set the secret token securely, we want to load it from the application's environment. The simplest method is to replace the hardcoded token with a reference to Ruby's `ENV`:
 
 {% codeblock /config/initializers/secret_token.rb %}
 # Be sure to restart your server when you modify this file.
@@ -69,38 +80,13 @@ The simplest method is to replace the hardcoded token with a reference to Ruby's
 MyApp::Application.config.secret_token = ENV['SECRET_TOKEN']
 {% endcodeblock %}
 
-While this has the advantage of maintaining better [development/production parity](http://www.12factor.net/dev-prod-parity), it does require a slightly more complex development workflow (see below). If `ENV['SECRET_TOKEN']` isn't set in `development` or `test`, ActionDispatch will raise an exception like:
+While this has the advantage of maintaining [development/production parity](http://www.12factor.net/dev-prod-parity), it can be inconvenient for simple apps. If `ENV['SECRET_TOKEN']` isn't set locally — for example in the development or testing workflow — ActionDispatch will raise an exception like:
 
     ArgumentError (A secret is required to generate an integrity hash for cookie session data. Use config.secret_token = "some secret phrase of at least 30 characters"in config/initializers/secret_token.rb):
-    
 
-Alternatively, the tokens could be set in the respective `/config/environments/*.rb` files. This has the advantage of not requiring `SECRET_TOKEN` to be set in your `test` or `development` environment, but has the drawback of duplicating logic between the `development.rb` and `test.rb`.
+One solution to this is managing a full set of environment variables within the development and test workflows. See below for more details on this.
 
-{% codeblock /config/environments/development.rb %}
-MyApp::Application.configure do
-  # Settings specified here will take precedence over those in config/application.rb
-  # ...
-  config.secret_token = 'x' * 30
-end
-{% endcodeblock %}
-
-{% codeblock /config/environments/test.rb %}
-MyApp::Application.configure do
-  # Settings specified here will take precedence over those in config/application.rb
-  # ...
-  config.secret_token = 'x' * 30
-end
-{% endcodeblock %}
-
-{% codeblock /config/environments/production.rb %}
-MyApp::Application.configure do
-  # Settings specified here will take precedence over those in config/application.rb
-  # ...
-  config.secret_token = ENV['SECRET_TOKEN']
-end
-{% endcodeblock %}
-
-Possibly the best option is to use `/config/initializers/secret_token.rb` to conditionally load the token from `ENV` depending on the `Rails.env`
+Alternatively, a token could be hard-coded for the `development` and `test` environments, and loaded from the ENV in `production`.
 
 {% codeblock /config/initializers/secret_token.rb %}
 # Be sure to restart your server when you modify this file.
@@ -116,35 +102,35 @@ else
 end
 {% endcodeblock %}
 
- This also removes any pretense that the hard-coded token is secure. (For some reason, this token seems pretty popular on [Github](https://github.com/search?q=config.secret_token+%3D++&type=Code&ref=searchresults))
+This also removes any pretense that the hard-coded token is secure.
+
+Occasionally, the following solution is used:
+
+{% codeblock /config/initializers/secret_token.rb — Don't do this! %}
+MyApp::Application.config.secret_token = ENV['SECRET_TOKEN'] || '3eb6db5a9026c547c72708438d496d942e976b252138db7e4e0ee5edd7539457d3ed0fa02ee5e7179420ce5290462018591adaf5f42adcf855da04877827def2'
+{% endcodeblock %}
+
+However, if `ENV['SECRET_TOKEN']` isn't set in production, **this will use the insecure token with no warning**.
 
 ## Managing an Application's ENV
 
-### Production
+[Dotenv](https://github.com/bkeepers/dotenv) is an excellent gem for managing an application's environment. Heroku's [foreman](https://devcenter.heroku.com/articles/procfile#setting-local-environment-variables) uses this behind the scenes. Install it with:
 
-On Heroku, the ENV is managed by the `heroku` command:
-    $ heroku config:set SECRET_TOKEN=3eb6db5a9026c547c72708438d496d942e976b252138db7e4e0ee5edd7539457d3ed0fa02ee5e7179420ce5290462018591adaf5f42adcf855da04877827def2
-(or you could use something like the [HerokuConfigVars engine](/blog/2013/05/19/managing-heroku-config-vars-from-the-web/))
+{% codeblock Gemfile %}
+gem 'dotenv-rails'
+{% endcodeblock %}
 
-For [Phusion Passenger](https://www.phusionpassenger.com/support#documentation), the ENV is set in the webserver config. See this [blog post](http://blog.phusion.nl/2008/12/16/passing-environment-variables-to-ruby-from-phusion-passenger/) for more information.
-
-For Unicorn, see [docs](http://unicorn.bogomips.org/unicorn_1.html#environment-variables).
-
-### Development
-
-[Foreman](https://github.com/ddollar/foreman) is a helpful gem for managing an application's environment variables in multiple contexts. Heroku uses this anyway, both for managing process and configuration. By default, it loads environment variables from the `.env` file.
+By default, it loads environment variables from the `.env` file. Simply create this file in the `RAILS_ROOT` on the production web server.
 
 {% codeblock .env %}
 # .env should NOT be checked in to source control
 SECRET_TOKEN=3eb6db5a9026c547c72708438d496d942e976b252138db7e4e0ee5edd7539457d3ed0fa02ee5e7179420ce5290462018591adaf5f42adcf855da04877827def2
 {% endcodeblock %}
 
-The key to leveraging this in your development workflow is the `foreman run` command.
+As the application configuration and infrastructure grows more complex, the gem also provides a consistent method to manage configuration across multiple developers, CI, staging and production servers. [Brandon Keepers](https://github.com/bkeepers) wrote more on [the rationale for the gem](http://opensoul.org/blog/archives/2012/07/24/dotenv/).
 
-> foreman run is used to run one-off commands using the same environment as your defined processes. 
+### Heroku
 
-    $ foreman run rails server
-    $ foreman run rspec
-    etc...
-
-
+On Heroku, the application's environment variables are managed from the `heroku` CLI:
+    $ heroku config:set SECRET_TOKEN=3eb6db5a9026c547c72708438d496d942e976b252138db7e4e0ee5edd7539457d3ed0fa02ee5e7179420ce5290462018591adaf5f42adcf855da04877827def2
+(or you could use something like the [HerokuConfigVars engine](/blog/2013/05/19/managing-heroku-config-vars-from-the-web/))
