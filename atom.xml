@@ -4,7 +4,7 @@
   <title><![CDATA[Daniel Fone]]></title>
   <link href="http://daniel.fone.net.nz/atom.xml" rel="self"/>
   <link href="http://daniel.fone.net.nz/"/>
-  <updated>2013-05-19T22:14:50+12:00</updated>
+  <updated>2013-05-20T15:18:42+12:00</updated>
   <id>http://daniel.fone.net.nz/</id>
   <author>
     <name><![CDATA[Daniel Fone]]></name>
@@ -12,6 +12,194 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[A better way to manage the Rails secret token]]></title>
+    <link href="http://daniel.fone.net.nz/blog/2013/05/20/a-better-way-to-manage-the-rails-secret-token/"/>
+    <updated>2013-05-20T07:35:00+12:00</updated>
+    <id>http://daniel.fone.net.nz/blog/2013/05/20/a-better-way-to-manage-the-rails-secret-token</id>
+    <content type="html"><![CDATA[<p><strong>tl;dr</strong> Don&rsquo;t hardcode secret tokens. Load them from the environment like this…</p>
+
+<figure class='code'><figcaption><span>/config/initializers/secret_token.rb </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="c1"># Be sure to restart your server when you modify this file.</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Your secret key for verifying the integrity of signed cookies.</span>
+</span><span class='line'><span class="c1"># If you change this key, all old signed cookies will become invalid!</span>
+</span><span class='line'><span class="c1"># Make sure the secret is at least 30 characters and all random,</span>
+</span><span class='line'><span class="c1"># no regular words or you&#39;ll be exposed to dictionary attacks.</span>
+</span><span class='line'><span class="ss">MyApp</span><span class="p">:</span><span class="ss">:Application</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">secret_token</span> <span class="o">=</span> <span class="k">if</span> <span class="no">Rails</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">development?</span> <span class="ow">or</span> <span class="no">Rails</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">test?</span>
+</span><span class='line'>  <span class="p">(</span><span class="s1">&#39;x&#39;</span> <span class="o">*</span> <span class="mi">30</span><span class="p">)</span> <span class="c1"># meets minimum requirement of 30 chars long</span>
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'>  <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;SECRET_TOKEN&#39;</span><span class="o">]</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>… and use the <a href="https://github.com/bkeepers/dotenv">Dotenv</a> gem in production if needed.</p>
+
+<h2>Insecure defaults</h2>
+
+<p>When you create a new Rails project, one of the files created will be <code>/config/initializers/secret_token.rb</code>. This file will look something like this:</p>
+
+<figure class='code'><figcaption><span>/config/initializers/secret_token.rb </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="c1"># Be sure to restart your server when you modify this file.</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Your secret key for verifying the integrity of signed cookies.</span>
+</span><span class='line'><span class="c1"># If you change this key, all old signed cookies will become invalid!</span>
+</span><span class='line'><span class="c1"># Make sure the secret is at least 30 characters and all random,</span>
+</span><span class='line'><span class="c1"># no regular words or you&#39;ll be exposed to dictionary attacks.</span>
+</span><span class='line'><span class="ss">MyApp</span><span class="p">:</span><span class="ss">:Application</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">secret_token</span> <span class="o">=</span> <span class="s1">&#39;3eb6db5a9026c547c72708438d496d942e976b252138db7e4e0ee5edd7539457d3ed0fa02ee5e7179420ce5290462018591adaf5f42adcf855da04877827def2&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This token is used to sign cookies that the application sets. Without this, it&rsquo;s impossible to trust cookies that the browser sends, and hence difficult to rely on session based authentication.</p>
+
+<h2>Why this is bad</h2>
+
+<p>Firstly, hard-coding configuration conflates config and code. Although this may not cause much pain in a very simple context, as the application and infrastructure grow this anti-pattern will make configuration increasingly complex and error prone.</p>
+
+<blockquote><p>An app’s config is everything that is likely to vary between deploys (staging, production, developer environments, etc). … Apps sometimes store config as constants in the code. This is a violation of twelve-factor, which requires strict separation of config from code. Config varies substantially across deploys, code does not.</p><footer><strong>The Twelve-Factor App</strong> <cite><a href='http://www.12factor.net/config'>III. Config</a></cite></footer></blockquote>
+
+
+<h3>Security risk</h3>
+
+<p>More importantly though is the security implication. Knowing the secret token allows an attacker to trivially impersonate any user in the application.</p>
+
+<p>The only system that <em>needs</em> to know the production secret token is the production infrastructure. In this case, the attack vector is limited to the production infrastructure, which is likely to be the most secure part of the infrastructure anyway.</p>
+
+<p>By hardcoding the production secret token in the code base, the following attack vectors are opened:</p>
+
+<ul>
+<li>Every developer that has had access to the code base</li>
+<li>Every development workstation that has a local copy of the code</li>
+<li>The source control repository (whether private or 3rd-party e.g. Github)</li>
+<li>The continuous integration server</li>
+<li>Any 3rd-party services that have access to the source code, e.g. <a href="https://codeclimate.com/">Code Climate</a> or <a href="https://gemnasium.com/">Gemnasium</a></li>
+<li>The people involved with all of the above services</li>
+</ul>
+
+
+<p>If an attacker wishes to obtain the application&rsquo;s secret token, there are vastly more opportunities when the secret token is stored in the code.</p>
+
+<p>The prevalence of this bad practice can be seen by searching <a href="https://github.com/search?l=Ruby&amp;p=1&amp;q=application.config.secret_token+%3D+%27&amp;ref=searchbar&amp;type=Code">Github</a> or <a href="https://www.google.co.nz/search?q=secret_token.rb+-ENV+site%3Agithub.com">Google</a>. It is trivial to gain administrative access to many live applications simply by browsing those search results.</p>
+
+<h2>Loading Rails configuration from the environment</h2>
+
+<p>In order to set the secret token securely, we want to load it from the application&rsquo;s environment. The simplest method is to replace the hardcoded token with a reference to Ruby&rsquo;s <code>ENV</code>:</p>
+
+<figure class='code'><figcaption><span>/config/initializers/secret_token.rb </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="c1"># Be sure to restart your server when you modify this file.</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Your secret key for verifying the integrity of signed cookies.</span>
+</span><span class='line'><span class="c1"># If you change this key, all old signed cookies will become invalid!</span>
+</span><span class='line'><span class="c1"># Make sure the secret is at least 30 characters and all random,</span>
+</span><span class='line'><span class="c1"># no regular words or you&#39;ll be exposed to dictionary attacks.</span>
+</span><span class='line'><span class="ss">MyApp</span><span class="p">:</span><span class="ss">:Application</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">secret_token</span> <span class="o">=</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;SECRET_TOKEN&#39;</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>While this has the advantage of maintaining <a href="http://www.12factor.net/dev-prod-parity">development/production parity</a>, it can be inconvenient for simple apps. If <code>ENV['SECRET_TOKEN']</code> isn&rsquo;t set locally — for example in the development or testing workflow — ActionDispatch will raise an exception like:</p>
+
+<pre><code>ArgumentError (A secret is required to generate an integrity hash for cookie session data. Use config.secret_token = "some secret phrase of at least 30 characters"in config/initializers/secret_token.rb):
+</code></pre>
+
+<p>One solution to this is managing a full set of environment variables within the development and test workflows. See below for more details on this.</p>
+
+<p>Alternatively, a token could be hard-coded for the <code>development</code> and <code>test</code> environments, and loaded from the ENV in <code>production</code>.</p>
+
+<figure class='code'><figcaption><span>/config/initializers/secret_token.rb </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="c1"># Be sure to restart your server when you modify this file.</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Your secret key for verifying the integrity of signed cookies.</span>
+</span><span class='line'><span class="c1"># If you change this key, all old signed cookies will become invalid!</span>
+</span><span class='line'><span class="c1"># Make sure the secret is at least 30 characters and all random,</span>
+</span><span class='line'><span class="c1"># no regular words or you&#39;ll be exposed to dictionary attacks.</span>
+</span><span class='line'><span class="ss">MyApp</span><span class="p">:</span><span class="ss">:Application</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">secret_token</span> <span class="o">=</span> <span class="k">if</span> <span class="no">Rails</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">development?</span> <span class="ow">or</span> <span class="no">Rails</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">test?</span>
+</span><span class='line'>  <span class="p">(</span><span class="s1">&#39;x&#39;</span> <span class="o">*</span> <span class="mi">30</span><span class="p">)</span> <span class="c1"># meets minimum requirement of 30 chars long</span>
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'>  <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;SECRET_TOKEN&#39;</span><span class="o">]</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This also removes any pretense that the hard-coded token is secure.</p>
+
+<p>Occasionally, the following solution is used:</p>
+
+<figure class='code'><figcaption><span>/config/initializers/secret_token.rb — Don&#8217;t do this! </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="ss">MyApp</span><span class="p">:</span><span class="ss">:Application</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">secret_token</span> <span class="o">=</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;SECRET_TOKEN&#39;</span><span class="o">]</span> <span class="o">||</span> <span class="s1">&#39;3eb6db5a9026c547c72708438d496d942e976b252138db7e4e0ee5edd7539457d3ed0fa02ee5e7179420ce5290462018591adaf5f42adcf855da04877827def2&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>However, if <code>ENV['SECRET_TOKEN']</code> isn&rsquo;t set in production, <strong>this will use the insecure token with no warning</strong>.</p>
+
+<h2>Managing an Application&rsquo;s ENV</h2>
+
+<p><a href="https://github.com/bkeepers/dotenv">Dotenv</a> is an excellent gem for managing an application&rsquo;s environment. Heroku&rsquo;s <a href="https://devcenter.heroku.com/articles/procfile#setting-local-environment-variables">foreman</a> uses this behind the scenes. Install it with:</p>
+
+<figure class='code'><figcaption><span>Gemfile </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem 'dotenv-rails'</span></code></pre></td></tr></table></div></figure>
+
+
+<p>By default, it loads environment variables from the <code>.env</code> file. Simply create this file in the <code>RAILS_ROOT</code> on the production web server.</p>
+
+<figure class='code'><figcaption><span>.env </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># .env should NOT be checked in to source control
+</span><span class='line'>SECRET_TOKEN=3eb6db5a9026c547c72708438d496d942e976b252138db7e4e0ee5edd7539457d3ed0fa02ee5e7179420ce5290462018591adaf5f42adcf855da04877827def2</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As the application configuration and infrastructure grows more complex, the gem also provides a consistent method to manage configuration across multiple developers, CI, staging and production servers. <a href="https://github.com/bkeepers">Brandon Keepers</a> wrote more on <a href="http://opensoul.org/blog/archives/2012/07/24/dotenv/">the rationale for the gem</a>.</p>
+
+<h3>Heroku</h3>
+
+<p>On Heroku, the application&rsquo;s environment variables are managed from the <code>heroku</code> CLI:</p>
+
+<pre><code>$ heroku config:set SECRET_TOKEN=3eb6db5a9026c547c72708438d496d942e976b252138db7e4e0ee5edd7539457d3ed0fa02ee5e7179420ce5290462018591adaf5f42adcf855da04877827def2
+</code></pre>
+
+<p>(or you could use something like the <a href="http://daniel.fone.net.nz/blog/2013/05/19/managing-heroku-config-vars-from-the-web/">HerokuConfigVars engine</a>)</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Managing Heroku Config Vars from the Web]]></title>

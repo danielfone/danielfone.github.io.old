@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Daniel Fone</title>
+  <title>A better way to manage the Rails secret token - Daniel Fone</title>
   <meta name="author" content="Daniel Fone">
 
   
@@ -29,7 +29,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://daniel.fone.net.nz/blog">
+  <link rel="canonical" href="http://daniel.fone.net.nz/blog/2013/05/20/a-better-way-to-manage-the-rails-secret-token">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Daniel Fone" type="application/atom+xml">
@@ -95,15 +95,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2013/05/20/a-better-way-to-manage-the-rails-secret-token/">A Better Way to Manage the Rails Secret Token</a></h1>
+      <h1 class="entry-title">A Better Way to Manage the Rails Secret Token</h1>
     
     
       <p class="meta">
@@ -126,7 +123,7 @@
   </header>
 
 
-  <div class="entry-content"><p><strong>tl;dr</strong> Don&rsquo;t hardcode secret tokens. Load them from the environment like this…</p>
+<div class="entry-content"><p><strong>tl;dr</strong> Don&rsquo;t hardcode secret tokens. Load them from the environment like this…</p>
 
 <figure class='code'><figcaption><span>/config/initializers/secret_token.rb </span></figcaption>
  <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -307,85 +304,16 @@
 
 <p>(or you could use something like the <a href="/blog/2013/05/19/managing-heroku-config-vars-from-the-web/">HerokuConfigVars engine</a>)</p>
 </div>
-  
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/05/19/managing-heroku-config-vars-from-the-web/">Managing Heroku Config Vars From the Web</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
   
 
+<span class="byline author vcard">Posted by <span class="fn">Daniel Fone</span></span>
 
-<time datetime="2013-05-19T20:50:00+12:00" pubdate data-updated="true">May 19<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><strong>tl;dr</strong> The <a href="https://github.com/danielfone/heroku_config_vars">heroku_config_vars</a> Rails engine provides a secure web interface for managing an application&rsquo;s Heroku configuration.</p>
-
-<h2>The Problem</h2>
-
-<p><a href="heroku.com">Heroku</a> don&rsquo;t provide a way to manage an application&rsquo;s <a href="https://devcenter.heroku.com/articles/config-vars">configuration variables</a> through a web interface. Although an application&rsquo;s ENV shouldn&rsquo;t really be used for domain-specific configuration or settings that change frequently, sometimes it&rsquo;s a hassle to drop into a console when doing something as trivial as updating SMTP settings or cycling OAuth tokens.</p>
-
-<p>What I really want to achieve is turning this:</p>
-
-<pre><code>$ heroku config:set GITHUB_USERNAME=joesmith
-Adding config vars and restarting myapp... done, v12
-GITHUB_USERNAME: joesmith
-</code></pre>
-
-<p>into this:</p>
-
-<p><img src="/images/2013-05-19-managing-heroku-config-vars-from-the-web/heroku-config-update.png"></p>
-
-<h2>The Solution</h2>
-
-<p>The <a href="https://github.com/danielfone/heroku_config_vars">heroku_config_vars</a> Rails engine provides a web interface for managing an application&rsquo;s Heroku configuration. This makes it possible for administrators without CLI access to manage their Heroku configuration.</p>
-
-<p><img src="/images/2013-05-19-managing-heroku-config-vars-from-the-web/screenshot-1.png">
-<img src="/images/2013-05-19-managing-heroku-config-vars-from-the-web/screenshot-2.png">
-<img src="/images/2013-05-19-managing-heroku-config-vars-from-the-web/screenshot-3.png"></p>
-
-<p>Installation and usage instructions can be found on <a href="https://github.com/danielfone/heroku_config_vars">github</a>. Feedback, questions, bugs, PRs are welcome!</p>
-
-<p>Enjoy.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/05/19/desire-paths-in-web-ui/">Desire Paths in Web UI</a></h1>
-    
-    
-      <p class="meta">
-        
 
 
 
@@ -397,188 +325,42 @@ GITHUB_USERNAME: joesmith
   
 
 
-<time datetime="2013-05-19T16:50:00+12:00" pubdate data-updated="true">May 19<span>th</span>, 2013</time>
-        
-      </p>
+<time datetime="2013-05-20T07:35:00+12:00" pubdate data-updated="true">May 20<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/heroku/'>Heroku</a>, <a class='category' href='/blog/categories/security/'>Security</a>
+  
+</span>
+
+
+    </p>
     
-  </header>
-
-
-  <div class="entry-content"><p>Slides and a rough transcription from my lightning talk
-at the <a href="https://twitter.com/chchruby">@chchruby</a> meetup on Thursday, 16th May, 2013.</p>
-
-<h2>Desire Paths in Web UIs</h2>
-
-<p><img src="/images/desire-paths/slide.001.jpg"></p>
-
-<blockquote><p>Hi everyone, I&rsquo;m Daniel Fone
-I&rsquo;m a freelance Rails engineer.
-<a href="https://twitter.com/danielfone">@danielfone</a></p>
-
-<p>Before I start, I want to frame this by saying,
-this is more of a general &ldquo;philosophy of web application design&rdquo;
-than a technical talk
-so feel free to disagree — I don’t think there’s right and wrong —
-but hopefully these musings are helpful to some of you</p></blockquote>
-
-<p><img src="/images/desire-paths/slide.002.jpg"></p>
-
-<blockquote><p>Ok, so “desire paths in web UI”</p>
-
-<p>Who&rsquo;s heard of these before? Who knows what a desire path is?
-Ok, who knows what a web UI is?</p>
-
-<p>Good, we&rsquo;ve got something to start with :)</p>
-
-<p>Desire paths are something that everyone’s familiar with, you probably just didn’t know they had a name:</p>
-
-<p>Little story…
-  I’ve got two little kids, and sometimes <a href="http://www.kungfugrippe.com/post/631603366/mommy-needs-a-minute">Mummy needs a minute</a>
-  so daddy takes the kids for endless walks in the parks around where we live. There’s heaps.
-And everywhere we go we see these things:</p></blockquote>
-
-<p><img src="/images/desire-paths/slide.003.jpg">
-<img src="/images/desire-paths/slide.004.jpg">
-<img src="/images/desire-paths/slide.005.jpg">
-<img src="/images/desire-paths/slide.006.jpg"></p>
-
-<blockquote><p>Those tracks you see between trees, between paved footpaths etc.
-that’s a desire path</p>
-
-<p>When someone designed the paths, they figured everyone wanted to walk “here”
-turns out everyone wants to walk “over here”</p>
-
-<p>Totally different story time:</p></blockquote>
-
-<p><img src="/images/desire-paths/slide.007.jpg"></p>
-
-<blockquote><p> ages ago I built a search feature for a client&rsquo;s in-house logistics system.
-kinda omnisearch, searches all these different fields, fuzzy matches etc.
-Some time later I was working with one of the users while they were using this system
-and they were looking for a particular Order or Parcel or something
-and instead of using my amazing search
-they clicked on the “All Orders” tab, went ctrl-f and typed in the order number they were looking for.
-So they just used the browser’s search function.</p>
-
-<p>Turns out there was one field that was shown on the “All Orders” list that wasn’t shown on the search results page, so they were saving themselves an extra click by just going ctrl &ndash;> find on the orders list.</p>
-
-<p>I designing the app, I never would&rsquo;ve thought about this particular edge case.</p>
-
-<p>  And it got me thinking…
-  These two stories are actually about the same thing!</p></blockquote>
-
-<p><img src="/images/desire-paths/slide.008.jpg"></p>
-
-<blockquote><p>Because really, a desire path is
-the disconnect between a <strong>designer&rsquo;s intention</strong>
-and a <strong>user&rsquo;s desires</strong></p></blockquote>
-
-<p><img src="/images/desire-paths/slide.009.jpg"></p>
-
-<blockquote><p>Here’s the dilema for us as application developers</p>
-
-<p>When I’m sitting down with a client and they want this new-fangled in house management tool.</p>
-
-<ul>
-<li>firstly, I don’t have any idea what their users (usually their staff) actually want</li>
-<li>secondly, the technical managers I’m talking to usually only have a limited idea</li>
-<li>finally, if you talk with the future users about how they do their job, and how they want this application to work… they have no idea either until they start using it!</li>
-</ul>
-
-
-<p>Basically, no-one knows exactly what they want until it’s in-front of them,
-and then all they know they want something slightly different.</p>
-
-<p>So what are we to do?</p></blockquote>
-
-<p><img src="/images/desire-paths/slide.010.jpg"></p>
-
-<blockquote><p>Here’s my pet theory…</p>
-
-<p><strong>Build paths, not corridors.</strong></p>
-
-<p>Going back to our outdoor examples,
-paved footpaths leave users the opportunity to express desire paths
-they can take shortcuts when they know where they’re going</p>
-
-<p>Corridors don’t leave opportunities for desire paths. You go the way the architect intended you to.</p>
-
-<p>I know what you’re thinking at this point…</p></blockquote>
-
-<p><img src="/images/desire-paths/slide.011.jpg"></p>
-
-<blockquote><p>Yeah. paths, corridors, muddy tracks in the ground. WAT.</p>
-
-<p>So let’s put some legs on this.
-Technically, what does this look like?</p></blockquote>
-
-<p><img src="/images/desire-paths/slide.012.jpg"></p>
-
-<blockquote><ol>
-<li><p>Display more data, not less. Perhaps you have to hide it behind a “show more” link. But if you give it to the user, they can do something with it. This is the difference between omitting data and hiding it. I’ll come back to this in a sec.</p></li>
-<li><p>Give the users all their data. export via CSV/XML whatever. In the business world, if they can get data out of your system and into excel, they can do anything with it. Like people can do ANYTHING with excel.</p></li>
-<li><p>Expose APIs, same idea. Give them the data and let them find the ways they want to use it.</p></li>
-</ol>
-
-
-<p>There&rsquo;s a caveat though…</p></blockquote>
-
-<p><img src="/images/desire-paths/slide.013.jpg"></p>
-
-<blockquote><p>Letting users make desire paths doesn’t mean making none of your own paths in the UI.
-You’ve still got to make decisions.</p>
-
-<p>New users of your application need to see well marked paths so they learn how this information system works.
-But as users become comfortable, they want the space to find their own shortcuts etc.
-So it is good to <strong>hide</strong> all the unneeded data, but it’s not good to <strong>omit</strong> it entirely.</p></blockquote>
-
-<p><img src="/images/desire-paths/slide.014.jpg"></p>
-
-<blockquote><p>For bonus points…</p>
-
-<p>If you’re doing SaaS or whatever, i.e. building value into your own product
-You can leverage desire paths.</p>
-
-<p>And if you can analyse your logs, or implement some JS tracking,
-Or — heaven forbid — talk to your users!</p>
-
-<p>You can discover the odd use cases you’d never thought of and then build those out.</p>
-
-<p>So to recap:</p></blockquote>
-
-<p><img src="/images/desire-paths/slide.015.jpg"></p>
-
-<blockquote><ol>
-<li>Let your users figure out how to do cool stuff with your app.</li>
-<li>Figure out what cool stuff they’re doing</li>
-<li>And then make it easier for everyone</li>
-</ol>
-</blockquote>
-
-<p><img src="/images/desire-paths/slide.016.jpg"></p>
-
-<blockquote><p>But basically…</p>
-
-<p><strong>Build paths, not corridors.</strong></p>
-
-<p>Whatever that means for you.</p></blockquote>
-
-<p><img src="/images/desire-paths/slide.017.jpg"></p>
-
-<blockquote><p>THANKS</p></blockquote>
+      <div class="sharing">
+  
+  
+  
 </div>
-  
-  
 
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/05/19/managing-heroku-config-vars-from-the-web/" title="Previous Post: Managing Heroku Config Vars from the Web">&laquo; Managing Heroku Config Vars from the Web</a>
+      
+      
+    </p>
+  </footer>
+</article>
 
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
+  </section>
+
+</div>
+
 <aside class="sidebar">
   
     <section>
@@ -590,7 +372,7 @@ Or — heaven forbid — talk to your users!</p>
   <img class="right" src="http://www.gravatar.com/avatar/5efc2a040a61cb22107bcfcecd58454c.png">
   <h1>About Me</h1>
   <p>
-    I&#8217;m a freelance Ruby on Rails engineer,
+    I'm a freelance Ruby on Rails engineer,
     based in Christchurch, New Zealand.<br>
     <a href="https://github.com/danielfone">Github profile</a>
   </p>
@@ -617,6 +399,7 @@ Or — heaven forbid — talk to your users!</p>
   
 </aside>
 
+
     </div>
   </div>
   <footer role="contentinfo"><p>
@@ -631,7 +414,10 @@ Or — heaven forbid — talk to your users!</p>
       var disqus_shortname = 'danielfone';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://daniel.fone.net.nz/blog/2013/05/20/a-better-way-to-manage-the-rails-secret-token/';
+        var disqus_url = 'http://daniel.fone.net.nz/blog/2013/05/20/a-better-way-to-manage-the-rails-secret-token/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
