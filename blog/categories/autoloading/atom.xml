@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Autoloading, | Daniel Fone]]></title>
+  <link href="http://daniel.fone.net.nz/blog/categories/autoloading/atom.xml" rel="self"/>
+  <link href="http://daniel.fone.net.nz/"/>
+  <updated>2013-05-24T10:48:14+12:00</updated>
+  <id>http://daniel.fone.net.nz/</id>
+  <author>
+    <name><![CDATA[Daniel Fone]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Autoloading The Wrong Superclass with Rails]]></title>
+    <link href="http://daniel.fone.net.nz/blog/2013/05/24/autoloading-the-wrong-superclass-with-rails-autoloading/"/>
+    <updated>2013-05-24T10:14:00+12:00</updated>
+    <id>http://daniel.fone.net.nz/blog/2013/05/24/autoloading-the-wrong-superclass-with-rails-autoloading</id>
+    <content type="html"><![CDATA[<p>Autoloading in Ruby on Rails can cause all kinds of grief if you don&rsquo;t watch out. Here&rsquo;s a really quick tip to avoid hours of debugging down the track.</p>
+
+<blockquote><p>Always use the full class namespace when specifying a superclass inside a module</p></blockquote>
+
+<p>For example:</p>
+
+<p>```ruby
+  module MyEngine</p>
+
+<pre><code>class WidgetController &lt; ApplicationController
+  # BAD! ApplicationController is ambiguous
+end
+</code></pre>
+
+<p>  end
+```</p>
+
+<p>```ruby
+  module MyEngine</p>
+
+<pre><code>class WidgetController &lt; MyEngine::ApplicationController
+  # Good - inherits from the module specific ApplicationController
+end
+</code></pre>
+
+<p>  end
+```</p>
+
+<p>```ruby
+  module MyEngine</p>
+
+<pre><code>class WidgetController &lt; ::ApplicationController
+  # Good - inherits from the top-level ApplicationController
+end
+</code></pre>
+
+<p>  end
+```</p>
+
+<p>In the first example, the superclass for WidgetController <strong>will depend on which classes are already loaded</strong>. Ruby will look for the following classes in order:</p>
+
+<ol>
+<li> <code>MyEngine::ApplicationController</code></li>
+<li> <code>::ApplicationController</code></li>
+</ol>
+
+
+<p>The trouble occurs when Rails has already autoloaded <code>::ApplicationController</code> and not <code>MyEngine::ApplicationController</code>. In this case, Rails will never need to autoload <code>MyEngine::ApplicationController</code> because <code>::ApplicationController</code> already matches the superclass.</p>
+
+<p>Autoloading can occur in a different order between execution environments. For example, tests could all pass and while production system fails because of the different autoloading behavior.</p>
+
+<p>The examples below demonstrate how the order of the class definitions affect which superclass is used if the superclass is ambiguous. When written out like this, the behavior is fairly obvious.</p>
+
+<p>```ruby
+class Base
+  def initialize</p>
+
+<pre><code>raise "This is the wrong super class!"
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>module Widget
+  class MyWidget &lt; Base</p>
+
+<pre><code># Inherits from ::Base because Widget::Base isn't defined yet
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>module Widget
+  class Base</p>
+
+<pre><code>def initialize
+  puts "Success!"
+end
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>```</p>
+
+<pre><code>&gt; Widget::MyWidget.new
+RuntimeError: This is the wrong super class!
+</code></pre>
+
+<p>```ruby
+class Base
+  def initialize</p>
+
+<pre><code>raise "This is the wrong super class!"
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>module Widget
+  class Base</p>
+
+<pre><code>def initialize
+  puts "Success!"
+end
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>module Widget
+  class MyWidget &lt; Base</p>
+
+<pre><code># Inherits from Widget::Base
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>```</p>
+
+<pre><code>&gt; Widget::MyWidget.new
+Success!
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>

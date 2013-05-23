@@ -9,18 +9,7 @@
   <meta name="author" content="Daniel Fone">
 
   
-  <meta name="description" content="tl;dr Don&rsquo;t hardcode secret tokens. Load them from the environment like this… /config/initializers/secret_token.rb 1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-# Be &hellip;">
+  <meta name="description" content="Autoloading in Ruby on Rails can cause all kinds of grief if you don&rsquo;t watch out. Here&rsquo;s a really quick tip to avoid hours of debugging &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -97,6 +86,275 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/05/24/autoloading-the-wrong-superclass-with-rails-autoloading/">Autoloading the Wrong Superclass With Rails</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-24T10:14:00+12:00" pubdate data-updated="true">May 24<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Autoloading in Ruby on Rails can cause all kinds of grief if you don&rsquo;t watch out. Here&rsquo;s a really quick tip to avoid hours of debugging down the track.</p>
+
+<blockquote><p>Always use the full class namespace when specifying a superclass inside a module</p></blockquote>
+
+<p>For example:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">module</span> <span class="nn">MyEngine</span>
+</span><span class='line'>    <span class="k">class</span> <span class="nc">WidgetController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>      <span class="c1"># BAD! ApplicationController is ambiguous</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">module</span> <span class="nn">MyEngine</span>
+</span><span class='line'>    <span class="k">class</span> <span class="nc">WidgetController</span> <span class="o">&lt;</span> <span class="ss">MyEngine</span><span class="p">:</span><span class="ss">:ApplicationController</span>
+</span><span class='line'>      <span class="c1"># Good - inherits from the module specific ApplicationController</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">module</span> <span class="nn">MyEngine</span>
+</span><span class='line'>    <span class="k">class</span> <span class="nc">WidgetController</span> <span class="o">&lt;</span> <span class="o">::</span><span class="no">ApplicationController</span>
+</span><span class='line'>      <span class="c1"># Good - inherits from the top-level ApplicationController</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In the first example, the superclass for WidgetController <strong>will depend on which classes are already loaded</strong>. Ruby will look for the following classes in order:</p>
+
+<ol>
+<li> <code>MyEngine::ApplicationController</code></li>
+<li> <code>::ApplicationController</code></li>
+</ol>
+
+
+<p>The trouble occurs when Rails has already autoloaded <code>::ApplicationController</code> and not <code>MyEngine::ApplicationController</code>. In this case, Rails will never need to autoload <code>MyEngine::ApplicationController</code> because <code>::ApplicationController</code> already matches the superclass.</p>
+
+<p>Autoloading can occur in a different order between execution environments. For example, tests could all pass and while production system fails because of the different autoloading behavior.</p>
+
+<p>The examples below demonstrate how the order of the class definitions affect which superclass is used if the superclass is ambiguous. When written out like this, the behavior is fairly obvious.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Base</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span>
+</span><span class='line'>    <span class="k">raise</span> <span class="s2">&quot;This is the wrong super class!&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">module</span> <span class="nn">Widget</span>
+</span><span class='line'>  <span class="k">class</span> <span class="nc">MyWidget</span> <span class="o">&lt;</span> <span class="no">Base</span>
+</span><span class='line'>    <span class="c1"># Inherits from ::Base because Widget::Base isn&#39;t defined yet</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">module</span> <span class="nn">Widget</span>
+</span><span class='line'>  <span class="k">class</span> <span class="nc">Base</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">initialize</span>
+</span><span class='line'>      <span class="nb">puts</span> <span class="s2">&quot;Success!&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<pre><code>&gt; Widget::MyWidget.new
+RuntimeError: This is the wrong super class!
+</code></pre>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Base</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span>
+</span><span class='line'>    <span class="k">raise</span> <span class="s2">&quot;This is the wrong super class!&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">module</span> <span class="nn">Widget</span>
+</span><span class='line'>  <span class="k">class</span> <span class="nc">Base</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">initialize</span>
+</span><span class='line'>      <span class="nb">puts</span> <span class="s2">&quot;Success!&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">module</span> <span class="nn">Widget</span>
+</span><span class='line'>  <span class="k">class</span> <span class="nc">MyWidget</span> <span class="o">&lt;</span> <span class="no">Base</span>
+</span><span class='line'>    <span class="c1"># Inherits from Widget::Base</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<pre><code>&gt; Widget::MyWidget.new
+Success!
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/05/21/storing-credentials-as-urls/">Storing Credentials as URLs</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-21T17:30:00+12:00" pubdate data-updated="true">May 21<span>st</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ heroku config
+</span><span class='line'>=== my-app Config Vars
+</span><span class='line'>MANDRILL_PASSWORD:            xxxxxxxx-a19b-4278-a67c-c9d83977bc24
+</span><span class='line'>MANDRILL_USERNAME:            myaccount</span></code></pre></td></tr></table></div></figure>
+
+
+<p>becomes:</p>
+
+<pre><code>$ heroku config:set MANDRILL_URI='http://myaccount:xxxxxxxx-a19b-4278-a67c-c9d83977bc24@mandrill.com'
+
+ &gt; y URI.parse MANDRILL_URI
+--- !ruby/object:URI::HTTP
+password: xxxxxxxx-a19b-4278-a67c-c9d83977bc24
+path: ''
+user: myaccount
+host: mandrill.com
+scheme: http
+parser: 
+fragment: 
+registry: 
+opaque: 
+query: 
+port: 80
+ =&gt; nil 
+</code></pre>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ heroku config
+</span><span class='line'>=== my-app Config Vars
+</span><span class='line'>SMTP_ADDRESS:                 smtp.mailgun.org
+</span><span class='line'>SMTP_PASSWORD:                5qtss3urhj12
+</span><span class='line'>SMTP_PORT:                    587
+</span><span class='line'>SMTP_USERNAME:                postmaster@shipping.etailer.co.nz</span></code></pre></td></tr></table></div></figure>
+
+
+<p>becomes:</p>
+
+<p>  SMTP_URI=&ldquo;smtp://postmaster%40shipping.etailer.co.nz:5qtss3urhj12@smtp.mailgun.org:587&rdquo;</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -601,6 +859,14 @@ Or — heaven forbid — talk to your users!</p>
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/05/24/autoloading-the-wrong-superclass-with-rails-autoloading/">Autoloading the Wrong Superclass With Rails</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/05/21/storing-credentials-as-urls/">Storing Credentials as URLs</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/05/20/a-better-way-to-manage-the-rails-secret-token/">A Better Way to Manage the Rails Secret Token</a>
