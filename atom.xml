@@ -4,7 +4,7 @@
   <title><![CDATA[Daniel Fone]]></title>
   <link href="http://daniel.fone.net.nz/atom.xml" rel="self"/>
   <link href="http://daniel.fone.net.nz/"/>
-  <updated>2013-05-24T10:48:14+12:00</updated>
+  <updated>2013-05-24T10:50:15+12:00</updated>
   <id>http://daniel.fone.net.nz/</id>
   <author>
     <name><![CDATA[Daniel Fone]]></name>
@@ -170,61 +170,6 @@ RuntimeError: This is the wrong super class!
 <pre><code>&gt; Widget::MyWidget.new
 Success!
 </code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Storing Credentials as URLs]]></title>
-    <link href="http://daniel.fone.net.nz/blog/2013/05/21/storing-credentials-as-urls/"/>
-    <updated>2013-05-21T17:30:00+12:00</updated>
-    <id>http://daniel.fone.net.nz/blog/2013/05/21/storing-credentials-as-urls</id>
-    <content type="html"><![CDATA[<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ heroku config
-</span><span class='line'>=== my-app Config Vars
-</span><span class='line'>MANDRILL_PASSWORD:            xxxxxxxx-a19b-4278-a67c-c9d83977bc24
-</span><span class='line'>MANDRILL_USERNAME:            myaccount</span></code></pre></td></tr></table></div></figure>
-
-
-<p>becomes:</p>
-
-<pre><code>$ heroku config:set MANDRILL_URI='http://myaccount:xxxxxxxx-a19b-4278-a67c-c9d83977bc24@mandrill.com'
-
- &gt; y URI.parse MANDRILL_URI
---- !ruby/object:URI::HTTP
-password: xxxxxxxx-a19b-4278-a67c-c9d83977bc24
-path: ''
-user: myaccount
-host: mandrill.com
-scheme: http
-parser: 
-fragment: 
-registry: 
-opaque: 
-query: 
-port: 80
- =&gt; nil 
-</code></pre>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ heroku config
-</span><span class='line'>=== my-app Config Vars
-</span><span class='line'>SMTP_ADDRESS:                 smtp.mailgun.org
-</span><span class='line'>SMTP_PASSWORD:                5qtss3urhj12
-</span><span class='line'>SMTP_PORT:                    587
-</span><span class='line'>SMTP_USERNAME:                postmaster@shipping.etailer.co.nz</span></code></pre></td></tr></table></div></figure>
-
-
-<p>becomes:</p>
-
-<p>  SMTP_URI=&ldquo;smtp://postmaster%40shipping.etailer.co.nz:5qtss3urhj12@smtp.mailgun.org:587&rdquo;</p>
 ]]></content>
   </entry>
   

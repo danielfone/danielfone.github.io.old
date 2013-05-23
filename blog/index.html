@@ -279,88 +279,6 @@ Success!
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2013/05/21/storing-credentials-as-urls/">Storing Credentials as URLs</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-05-21T17:30:00+12:00" pubdate data-updated="true">May 21<span>st</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ heroku config
-</span><span class='line'>=== my-app Config Vars
-</span><span class='line'>MANDRILL_PASSWORD:            xxxxxxxx-a19b-4278-a67c-c9d83977bc24
-</span><span class='line'>MANDRILL_USERNAME:            myaccount</span></code></pre></td></tr></table></div></figure>
-
-
-<p>becomes:</p>
-
-<pre><code>$ heroku config:set MANDRILL_URI='http://myaccount:xxxxxxxx-a19b-4278-a67c-c9d83977bc24@mandrill.com'
-
- &gt; y URI.parse MANDRILL_URI
---- !ruby/object:URI::HTTP
-password: xxxxxxxx-a19b-4278-a67c-c9d83977bc24
-path: ''
-user: myaccount
-host: mandrill.com
-scheme: http
-parser: 
-fragment: 
-registry: 
-opaque: 
-query: 
-port: 80
- =&gt; nil 
-</code></pre>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ heroku config
-</span><span class='line'>=== my-app Config Vars
-</span><span class='line'>SMTP_ADDRESS:                 smtp.mailgun.org
-</span><span class='line'>SMTP_PASSWORD:                5qtss3urhj12
-</span><span class='line'>SMTP_PORT:                    587
-</span><span class='line'>SMTP_USERNAME:                postmaster@shipping.etailer.co.nz</span></code></pre></td></tr></table></div></figure>
-
-
-<p>becomes:</p>
-
-<p>  SMTP_URI=&ldquo;smtp://postmaster%40shipping.etailer.co.nz:5qtss3urhj12@smtp.mailgun.org:587&rdquo;</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
       <h1 class="entry-title"><a href="/blog/2013/05/20/a-better-way-to-manage-the-rails-secret-token/">A Better Way to Manage the Rails Secret Token</a></h1>
     
     
@@ -862,10 +780,6 @@ Or — heaven forbid — talk to your users!</p>
     
       <li class="post">
         <a href="/blog/2013/05/24/autoloading-the-wrong-superclass-with-rails-autoloading/">Autoloading the Wrong Superclass With Rails</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/05/21/storing-credentials-as-urls/">Storing Credentials as URLs</a>
       </li>
     
       <li class="post">
