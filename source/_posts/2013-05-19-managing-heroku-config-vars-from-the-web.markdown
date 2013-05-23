@@ -10,7 +10,7 @@ categories: Gems Heroku
 
 ## The Problem
 
-[Heroku](heroku.com) don't provide a way to manage an application's [configuration variables](https://devcenter.heroku.com/articles/config-vars) through a web interface. Although an application's ENV shouldn't really be used for domain-specific configuration or settings that change frequently, sometimes it's a hassle to drop into a console when doing something as trivial as updating SMTP settings or cycling OAuth tokens.
+[Heroku](http://heroku.com) don't provide a way to manage an application's [configuration variables](https://devcenter.heroku.com/articles/config-vars) through a web interface. Although an application's ENV shouldn't really be used for domain-specific configuration or settings that change frequently, sometimes it's a hassle to drop into a console when doing something as trivial as updating SMTP settings or cycling OAuth tokens.
 
 What I really want to achieve is turning this:
 
