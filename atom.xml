@@ -4,7 +4,7 @@
   <title><![CDATA[Daniel Fone]]></title>
   <link href="http://daniel.fone.net.nz/atom.xml" rel="self"/>
   <link href="http://daniel.fone.net.nz/"/>
-  <updated>2013-05-20T16:53:10+12:00</updated>
+  <updated>2013-05-24T00:16:09+12:00</updated>
   <id>http://daniel.fone.net.nz/</id>
   <author>
     <name><![CDATA[Daniel Fone]]></name>
@@ -212,7 +212,7 @@
 
 <h2>The Problem</h2>
 
-<p><a href="heroku.com">Heroku</a> don&rsquo;t provide a way to manage an application&rsquo;s <a href="https://devcenter.heroku.com/articles/config-vars">configuration variables</a> through a web interface. Although an application&rsquo;s ENV shouldn&rsquo;t really be used for domain-specific configuration or settings that change frequently, sometimes it&rsquo;s a hassle to drop into a console when doing something as trivial as updating SMTP settings or cycling OAuth tokens.</p>
+<p><a href="http://heroku.com">Heroku</a> don&rsquo;t provide a way to manage an application&rsquo;s <a href="https://devcenter.heroku.com/articles/config-vars">configuration variables</a> through a web interface. Although an application&rsquo;s ENV shouldn&rsquo;t really be used for domain-specific configuration or settings that change frequently, sometimes it&rsquo;s a hassle to drop into a console when doing something as trivial as updating SMTP settings or cycling OAuth tokens.</p>
 
 <p>What I really want to achieve is turning this:</p>
 
