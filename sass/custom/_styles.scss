@@ -34,6 +34,10 @@ aside.sidebar {
   a {
     color: $link-color;
 
+    &:visited {
+      color: $link-color-visited;
+    }
+
     &.button {
       $button-bg: lighten($theme-color, 5);
 

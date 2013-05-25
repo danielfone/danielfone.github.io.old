@@ -26,7 +26,7 @@ $footer-link-color: $footer-color;
 // Main Link Colors
 $link-color: $theme-color;
 $link-color-hover: $link-color;
-$link-color-visited: $link-color;
+$link-color-visited: adjust-color($link-color, $lightness: -35);
 $link-color-active: $link-color;
 $sidebar-link-color-subdued: $link-color;
 
