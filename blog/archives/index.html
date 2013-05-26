@@ -34,19 +34,40 @@ May 24 2013 posted in ActiveRecord, Validation Autoloading The Wrong Superclass 
   function addSidebarToggler() {}
 </script>
 <!-- jQuery Form Plugin -->
-<script src="http://malsup.github.com/jquery.form.js"></script>
+<script src="/javascripts/libs/jquery.form.js"></script>
 <!-- jQuery Form Validation Plugin -->
-<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
+<script src="/javascripts/libs/jquery.validate.min.js"></script>
 <script src="/javascripts/google_form.js"></script>
 
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  var _gap = _gap || [];
 
-  ga('create', 'UA-41009873-1', 'fone.net.nz');
-  ga('send', 'pageview');
+  // Standard Google Analytics pushes, just with _gap.push. 
+  // You can push anything, just like normal, via _gap.push instead of _gaq.push.
+  _gap.push(["_setAccount", "UA-41009873-1"]);
+  _gap.push(["_trackPageview"]);
+
+  // With both bounce trackers active, any user who scrolls down 50%
+  // OR stays 10 seconds is not counted as a bounce. You can use just one too.
+  _gap.push(["_gapTrackBounceViaTime", 10]); // Change seconds, if needed.
+  _gap.push(["_gapTrackBounceViaScroll", 50]); // Change percentage, if needed.
+
+  // Every 20 seconds, push a read event so that time on site is more accurate.
+  // Only allow 30 of these read events per page.
+  _gap.push(["_gapTrackReads", 20, 30]); // Change cadence and max read events per page, if needed.
+
+  // Anytime a user clicks a link, internal or external, push the event.
+  _gap.push(["_gapTrackLinkClicks"]);
+
+  (function() {
+      var gap = document.createElement("script");
+      gap.async = true;
+      gap.type = "text/javascript";
+      gap.src = "/javascripts/gap.min.js";
+
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(gap, s);
+  })();
 </script>
 
   
