@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Debugging | Daniel Fone]]></title>
   <link href="http://daniel.fone.net.nz/blog/categories/debugging/atom.xml" rel="self"/>
   <link href="http://daniel.fone.net.nz/"/>
-  <updated>2013-05-28T04:27:52+12:00</updated>
+  <updated>2013-05-28T04:30:47+12:00</updated>
   <id>http://daniel.fone.net.nz/</id>
   <author>
     <name><![CDATA[Daniel Fone]]></name>
@@ -12,6 +12,173 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Why You Should Never Rescue Exception in Ruby]]></title>
+    <link href="http://daniel.fone.net.nz/blog/2013/05/28/why-you-should-never-rescue-exception-in-ruby/"/>
+    <updated>2013-05-28T04:27:00+12:00</updated>
+    <id>http://daniel.fone.net.nz/blog/2013/05/28/why-you-should-never-rescue-exception-in-ruby</id>
+    <content type="html"><![CDATA[<p><strong>tl;dr</strong> <strong><code>rescue Exception =&gt; e</code> will turn your code into a brain eating zombie.</strong></p>
+
+<p>The equivalent of <code>rescue</code> with an argument is <code>rescue =&gt; e</code> or <code>rescue StandardError =&gt; e</code>. Use these, or better still, figure out exactly what you&rsquo;re trying to rescue and use <code>rescue OneError, AnotherError =&gt; e</code></p>
+
+<h2>What&rsquo;s the deal?</h2>
+
+<p>A common pattern for rescuing exceptions in Ruby is:</p>
+
+<p><code>ruby
+def do_some_job!
+  # ... do something ...
+  job_succeeded
+rescue
+  job_failed
+end
+</code></p>
+
+<p>This is <em>okay</em>, but when developers need to know the exception details, a horrible, <em>nasty</em>, <strong>brain-devouring</strong> pattern tends to emerge:</p>
+
+<p><code>ruby
+def do_some_job!
+  # ... do something ...
+  job_succeeded
+rescue Exception =&gt; e
+  job_failed e
+end
+</code></p>
+
+<p>I have been caught out by that code on at least three separate occasions. Twice when I wrote it. I write this post in the hope that I (and perhaps others) will finally wise up about exception handling and that my fingers will never, ever type that code again.</p>
+
+<p><em>(Just to confirm this is a actually bad practice, here&rsquo;s <a href="https://github.com/search?l=ruby&amp;o=asc&amp;p=1&amp;q=%22rescue+Exception+=%3E+%22&amp;ref=searchresults&amp;type=Code">~200k results</a> for <code>rescue Exception =&gt;</code> on Github)</em></p>
+
+<h2>What is this I don&rsquo;t even…</h2>
+
+<p><code>Exception</code> is the root of the exception class hierarchy in Ruby. Everything from signal handling to memory errors will raise a subclass of Exception. Here&rsquo;s the full list of exceptions from ruby-core that we&rsquo;ll inadvertently rescue when rescuing Exception.</p>
+
+<p>```ruby
+SystemStackError
+NoMemoryError
+SecurityError
+ScriptError
+  NotImplementedError
+  LoadError</p>
+
+<pre><code>Gem::LoadError
+</code></pre>
+
+<p>  SyntaxError
+SignalException
+  Interrupt
+SystemExit
+  Gem::SystemExitException
+```</p>
+
+<p>Do you really want to rescue a <code>NoMemoryError</code> and send an email saying the job failed?!? Good luck with that.</p>
+
+<h2>Better: Rescue StandardError</h2>
+
+<p><code>rescue =&gt; e</code> is shorthand for <code>rescue StandardError =&gt; e</code> and is almost certainly the broadest type of Exception that we want to rescue. In almost every circumstance, we can replace <code>rescue Exception =&gt; e</code> with <code>rescue =&gt; e</code> and be better off for it. The only time when that&rsquo;s <em>not</em> a good idea is for code that&rsquo;s doing some kind of exception logging/reporting/management. In those rare cases, it&rsquo;s possible we&rsquo;ll want to rescue non-StandardErrors — but we still need to think pretty hard about what happens after we&rsquo;ve rescued them.</p>
+
+<p>Most of the time though, we don&rsquo;t even want to rescue StandardError!</p>
+
+<h2>More Self-Inflicted Fail</h2>
+
+<p>Imagine a scenario where we&rsquo;re connecting to a 3rd-party API in our application. For example, we want our users to upload their cat photos to twitfaceagram. We definitely want to handle the scenarios where the connection times out, or the DNS fails to resolve, or the API returns bogus data. In these circumstances, we want to present a friendly message to the user that the application couldn&rsquo;t connect to the remote server.</p>
+
+<p><code>ruby
+def upload_to_twitfaceagram
+  # ... do something ...
+rescue =&gt; e
+  flash[:error] = "The internet broke"
+end
+</code></p>
+
+<p>Most of the time, this code will do what we expect. Something out of our control will go wrong, and it&rsquo;s appropriate to present the user with a friendly message. However, there&rsquo;s a major gotcha with this code: we&rsquo;re still rescuing many exceptions we&rsquo;re not aware of.</p>
+
+<p>Here&rsquo;s an abridged list of StandardErrors defined in ruby-core 2.0.0 (1.9 is not materially different):</p>
+
+<p>```ruby
+StandardError
+  FiberError
+  ThreadError
+  IndexError</p>
+
+<pre><code>StopIteration
+KeyError
+</code></pre>
+
+<p>  Math::DomainError
+  LocalJumpError
+  IOError</p>
+
+<pre><code>EOFError
+</code></pre>
+
+<p>  EncodingError</p>
+
+<pre><code>Encoding::ConverterNotFoundError
+Encoding::InvalidByteSequenceError
+Encoding::UndefinedConversionError
+Encoding::CompatibilityError
+</code></pre>
+
+<p>  RegexpError
+  SystemCallError</p>
+
+<pre><code>Errno::ERPCMISMATCH
+# ... lots of system call errors ...
+Errno::NOERROR # errrr.... what?
+</code></pre>
+
+<p>  RangeError</p>
+
+<pre><code>FloatDomainError
+</code></pre>
+
+<p>  ZeroDivisionError
+  RuntimeError</p>
+
+<pre><code>Gem::Exception
+  # ... lots of gem errors ...
+</code></pre>
+
+<p>  NameError</p>
+
+<pre><code>NoMethodError
+</code></pre>
+
+<p>  ArgumentError</p>
+
+<pre><code>Gem::Requirement::BadRequirementError
+</code></pre>
+
+<p>  TypeError
+```</p>
+
+<p>In a fresh Rails 3.2.13 application, there are <strong><a href="https://gist.github.com/danielfone/5654600">375 StandardErrors defined</a></strong>.</p>
+
+<p>Now let&rsquo;s say we&rsquo;re refactoring the API integration and we make a typo with a method name. What&rsquo;s going to happen?</p>
+
+<p>If we&rsquo;ve wrapped the entire process in a <code>rescue =&gt; e</code> (which is rescuing StandardError) the NoMethodError is going to be swallowed and our graceful error handling code is going to be run instead. When we run our well written tests, they&rsquo;ll fail. But rather than raising a straight-forward NoMethodError, it&rsquo;ll look like there was an gracefully handled connectivity problem.</p>
+
+<p>Now <em>that</em> is going to take some debugging.</p>
+
+<p>If our tests are poorly written there&rsquo;ll be no exception and perhaps the tests will just pass. Granted, in production our users won&rsquo;t be seeing ugly 500 errors, but they sure won&rsquo;t be uploading their cat photos either.</p>
+
+<h2>Best: Rescue Specific Exceptions</h2>
+
+<p>Every part of our code is <em>qualified</em> to rescue from certain exceptional circumstances. If we want to catch connectivity problems in an API integration, our code will be qualified to rescue from a <a href="http://tammersaleh.com/posts/rescuing-net-http-exceptions">long list</a> of Net related exceptions. It is <em>not</em> qualified to rescue from an ArgumentError, which is a code-time problem and not a run-time problem!</p>
+
+<p>Every time we write a rescue, we need to think hard about what exceptions this code is actually qualified to handle.</p>
+
+<p>In the case of HTTP, we can make it easier on ourselves and use a wrapper like <a href="https://github.com/lostisland/faraday">faraday</a>. In this case we&rsquo;ll have a <a href="https://github.com/lostisland/faraday/blob/master/lib/faraday/error.rb">much shorter list</a> of possible exceptions to rescue.</p>
+
+<h2>So…</h2>
+
+<p>… if you encounter <code>rescue Exception =&gt; e</code> in an existing codebase, you can almost certainly replace it with <code>rescue =&gt; e</code>.</p>
+
+<p>… if you find yourself about to type <code>rescue Exception =&gt; e</code>, slap yourself in the face, figure out exactly what exceptions you&rsquo;re dealing with and rescue those instead.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Autoloading The Wrong Superclass with Rails]]></title>
