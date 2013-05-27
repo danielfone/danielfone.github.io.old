@@ -3,7 +3,7 @@ layout: post
 title: "Why You Should Never Rescue Exception in Ruby"
 date: 2013-05-28 04:27
 comments: true
-categories: 
+categories: Debugging
 ---
 
 **tl;dr** **`rescue Exception => e` will turn your code into a brain eating zombie.**
