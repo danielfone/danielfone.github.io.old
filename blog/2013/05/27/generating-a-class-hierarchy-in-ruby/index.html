@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: ActiveRecord - Daniel Fone</title>
+  <title>Generating a Class Hierarchy in Ruby - Daniel Fone</title>
   <meta name="author" content="Daniel Fone">
 
   
-  <meta name="description" content="Category: ActiveRecord">
+  <meta name="description" content="Here&rsquo;s a way to see what classes descend from a particular superclass in Ruby. You can use it to list all ActiveRecord models defined in your &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://daniel.fone.net.nzblog/categories/activerecord">
+  <link rel="canonical" href="http://daniel.fone.net.nz/blog/2013/05/27/generating-a-class-hierarchy-in-ruby">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Daniel Fone" type="application/atom+xml">
@@ -106,36 +106,167 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: ActiveRecord</h1>
+    
+      <h1 class="entry-title">Generating a Class Hierarchy in Ruby</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-27T12:59:00+12:00" pubdate data-updated="true">May 27<span>th</span>, 2013</time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p>Here&rsquo;s a way to see what classes descend from a particular superclass in Ruby. You can use it to list all ActiveRecord models defined in your application, every implementation on a particular base class, or whatever else might be of interest.</p>
 
-  
-  <h2>2013</h2>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&gt; puts ClassHierarchy.new ActionController::Base
+</span><span class='line'>ActionController::Base
+</span><span class='line'>  ApplicationController
+</span><span class='line'>    UsersController
+</span><span class='line'>    UserSessionsController
+</span><span class='line'>    OrdersController
+</span><span class='line'>    ...</span></code></pre></td></tr></table></div></figure>
 
-<article>
-  
-<h1><a href="/blog/2013/05/24/persist-invalid-records-with-activerecord/">Persist Invalid Records with ActiveRecord</a></h1>
-<time datetime="2013-05-24T12:38:00+12:00" pubdate><span class='month'>May</span> <span class='day'>24</span> <span class='year'>2013</span></time>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/activerecord/'>ActiveRecord</a>, <a class='category' href='/blog/categories/validation/'>Validation</a></span>
-</footer>
+<p>If you&rsquo;re using Rails, bear in mind that most of your classes won&rsquo;t be loaded by default in the development environment. You can get around this by manually requiring the files you&rsquo;re interested in:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Dir.glob File.join(Rails.root, 'app/models/**/*.rb'), &method(:require)</span></code></pre></td></tr></table></div></figure>
 
 
-</article>
+<p>To use in your code, simply put <code>class_hierarchy.rb</code> somewhere that makes sense (perhaps /lib) and <code>require 'class_hierarchy'</code>.</p>
+
+<div><script src='https://gist.github.com/5654633.js?file=class_hierarchy.rb'></script>
+<noscript><pre><code>class ClassHierarchy
+
+  def initialize(root_class)
+    @root_class = root_class
+    @parent_class = @root_class.superclass
+    @tree = {}
+    generate_tree
+  end
+
+  def to_s
+    @tree.collect { |class_name, subclasses| branch_to_s class_name, subclasses }.join
+  end
+
+private
+
+  def generate_tree
+    subclasses.each { |subclass| subclass.insert_into_tree @tree, @parent_class }
+  end
+
+  def subclasses
+    @subclasses ||= all_classes.select { |klass| klass &lt; @root_class }.collect { |klass| ClassHierarchy::Subclass.new klass }
+  end
+
+  def all_classes
+    @all_classes ||= ObjectSpace.each_object(::Class)
+  end
+
+  def branch_to_s(class_name, subclasses, indent=0)
+    string = (&quot; &quot; * indent)
+    string &lt;&lt; class_name
+    string &lt;&lt; &quot;\n&quot;
+    string &lt;&lt; subclasses.collect { |subclass_name, subsubclasses| branch_to_s subclass_name, subsubclasses, indent + 2 }.join
+  end
+
+  class Subclass &lt; Struct.new(:subclass)
+
+    def superclasses
+      @superclasses ||= subclass.ancestors - subclass.included_modules
+    end
+
+    def insert_into_tree(tree, root_class)
+      classes = superclasses.take_while { |klass| klass != root_class }
+      classes.reverse.collect(&amp;:name).compact.inject(tree) { |memo,name| memo[name] ||= {} }
+    end
+
+  end
+
+end
+</code></pre></noscript></div>
+
+
 
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Daniel Fone</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-27T12:59:00+12:00" pubdate data-updated="true">May 27<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/metaprogramming/'>Metaprogramming</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/05/27/meeting-inspiration-halfway/" title="Previous Post: Meeting Inspiration Halfway">&laquo; Meeting Inspiration Halfway</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -205,7 +336,10 @@
       var disqus_shortname = 'danielfone';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://daniel.fone.net.nz/blog/2013/05/27/generating-a-class-hierarchy-in-ruby/';
+        var disqus_url = 'http://daniel.fone.net.nz/blog/2013/05/27/generating-a-class-hierarchy-in-ruby/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

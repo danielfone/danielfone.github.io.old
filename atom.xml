@@ -4,7 +4,7 @@
   <title><![CDATA[Daniel Fone]]></title>
   <link href="http://daniel.fone.net.nz/atom.xml" rel="self"/>
   <link href="http://daniel.fone.net.nz/"/>
-  <updated>2013-05-27T12:48:37+12:00</updated>
+  <updated>2013-05-27T13:22:08+12:00</updated>
   <id>http://daniel.fone.net.nz/</id>
   <author>
     <name><![CDATA[Daniel Fone]]></name>
@@ -12,6 +12,93 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Generating a Class Hierarchy in Ruby]]></title>
+    <link href="http://daniel.fone.net.nz/blog/2013/05/27/generating-a-class-hierarchy-in-ruby/"/>
+    <updated>2013-05-27T12:59:00+12:00</updated>
+    <id>http://daniel.fone.net.nz/blog/2013/05/27/generating-a-class-hierarchy-in-ruby</id>
+    <content type="html"><![CDATA[<p>Here&rsquo;s a way to see what classes descend from a particular superclass in Ruby. You can use it to list all ActiveRecord models defined in your application, every implementation on a particular base class, or whatever else might be of interest.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&gt; puts ClassHierarchy.new ActionController::Base
+</span><span class='line'>ActionController::Base
+</span><span class='line'>  ApplicationController
+</span><span class='line'>    UsersController
+</span><span class='line'>    UserSessionsController
+</span><span class='line'>    OrdersController
+</span><span class='line'>    ...</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you&rsquo;re using Rails, bear in mind that most of your classes won&rsquo;t be loaded by default in the development environment. You can get around this by manually requiring the files you&rsquo;re interested in:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Dir.glob File.join(Rails.root, 'app/models/**/*.rb'), &method(:require)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To use in your code, simply put <code>class_hierarchy.rb</code> somewhere that makes sense (perhaps /lib) and <code>require 'class_hierarchy'</code>.</p>
+
+<div><script src='https://gist.github.com/5654633.js?file=class_hierarchy.rb'></script>
+<noscript><pre><code>class ClassHierarchy
+
+  def initialize(root_class)
+    @root_class = root_class
+    @parent_class = @root_class.superclass
+    @tree = {}
+    generate_tree
+  end
+
+  def to_s
+    @tree.collect { |class_name, subclasses| branch_to_s class_name, subclasses }.join
+  end
+
+private
+
+  def generate_tree
+    subclasses.each { |subclass| subclass.insert_into_tree @tree, @parent_class }
+  end
+
+  def subclasses
+    @subclasses ||= all_classes.select { |klass| klass &lt; @root_class }.collect { |klass| ClassHierarchy::Subclass.new klass }
+  end
+
+  def all_classes
+    @all_classes ||= ObjectSpace.each_object(::Class)
+  end
+
+  def branch_to_s(class_name, subclasses, indent=0)
+    string = (&quot; &quot; * indent)
+    string &lt;&lt; class_name
+    string &lt;&lt; &quot;\n&quot;
+    string &lt;&lt; subclasses.collect { |subclass_name, subsubclasses| branch_to_s subclass_name, subsubclasses, indent + 2 }.join
+  end
+
+  class Subclass &lt; Struct.new(:subclass)
+
+    def superclasses
+      @superclasses ||= subclass.ancestors - subclass.included_modules
+    end
+
+    def insert_into_tree(tree, root_class)
+      classes = superclasses.take_while { |klass| klass != root_class }
+      classes.reverse.collect(&amp;:name).compact.inject(tree) { |memo,name| memo[name] ||= {} }
+    end
+
+  end
+
+end
+</code></pre></noscript></div>
+
+
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Meeting Inspiration Halfway]]></title>
