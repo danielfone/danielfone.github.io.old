@@ -4,7 +4,7 @@
   <title><![CDATA[Daniel Fone]]></title>
   <link href="http://daniel.fone.net.nz/atom.xml" rel="self"/>
   <link href="http://daniel.fone.net.nz/"/>
-  <updated>2013-05-27T10:03:13+12:00</updated>
+  <updated>2013-05-27T12:48:37+12:00</updated>
   <id>http://daniel.fone.net.nz/</id>
   <author>
     <name><![CDATA[Daniel Fone]]></name>
@@ -12,6 +12,27 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Meeting Inspiration Halfway]]></title>
+    <link href="http://daniel.fone.net.nz/blog/2013/05/27/meeting-inspiration-halfway/"/>
+    <updated>2013-05-27T12:43:00+12:00</updated>
+    <id>http://daniel.fone.net.nz/blog/2013/05/27/meeting-inspiration-halfway</id>
+    <content type="html"><![CDATA[<blockquote><p>[Inspiration] does not always respond to the first invitation. We must always work, and a self-respecting artist must not fold his hands on the pretext that he is not in the mood. If we wait for the mood, without endeavouring to meet it half-way, we easily become indolent and apathetic. We must be patient, and believe that inspiration will come to those who can master their disinclination.</p><footer><strong>Pyotr Ilyich Tchaikovsky</strong></footer></blockquote>
+
+
+<p>Sometimes as a freelancer, it can be very hard to remain productive without work from clients. when I&rsquo;m busy engaged with clients, I have dozens of ideas about open source projects, business development, SaaS applications etc. But when I finally get a gap between engagements, it can be hard to turn those ideas into actionable points. I know I&rsquo;ve hit the bottom of the motivation stack when I&rsquo;m clicking through meme gifs on the frontpage of reddit.</p>
+
+<p>As an engineer, I do my best work when I have a concrete problem in front of me that needs a solution in a hurry. Without that focussing effect, I find myself waiting for bursts of inspiration to fill my sails.</p>
+
+<p>The antidote? <em>&ldquo;Believe that inspiration will come to those who can master their disinclination.&rdquo;</em></p>
+
+<p>Or, to hear it another way…</p>
+
+<blockquote><p>We just have to come in every morning and somehow, launch the editor.</p><footer><strong>Joel Spolsky,</strong> <cite><a href='http://www.joelonsoftware.com/articles/fog0000000339.html'>www.joelonsoftware.com/articles/&hellip;</a></cite></footer></blockquote>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Persist Invalid Records with ActiveRecord]]></title>
