@@ -1,16 +1,16 @@
 ---
 layout: post
 title: "Why You Should Never Rescue Exception in Ruby"
-date: 2013-05-27 07:04
+date: 2013-05-28 04:27
 comments: true
 categories: 
 ---
 
-The equivalent of `rescue` with an argument is `rescue => e` or `rescue StandardError => e`, **NOT** `rescue Exception => e`. `rescue Exception => e` will turn your code into a brain eating zombie.
+**tl;dr** **`rescue Exception => e` will turn your code into a brain eating zombie.**
 
-Use `rescue => e`, or figure out exactly what you're trying to rescue and use `rescue OneError, AnotherError => e`
+The equivalent of `rescue` with an argument is `rescue => e` or `rescue StandardError => e`. Use these, or better still, figure out exactly what you're trying to rescue and use `rescue OneError, AnotherError => e`
 
----
+## What's the deal?
 
 A common pattern for rescuing exceptions in Ruby is:
 
@@ -40,7 +40,7 @@ I have been caught out by that code on at least three separate occasions. Twice 
 
 ## What is this I don't even…
 
-`Exception` is the root of the exception class hierarchy in Ruby. Everything from signal handling to memory errors will raise a subclass of Exception. Here's the full list of the exceptions from ruby-core that we'll inadvertently rescue when rescuing Exception.
+`Exception` is the root of the exception class hierarchy in Ruby. Everything from signal handling to memory errors will raise a subclass of Exception. Here's the full list of exceptions from ruby-core that we'll inadvertently rescue when rescuing Exception.
 
 ```ruby
 SystemStackError
@@ -67,7 +67,7 @@ Most of the time though, we don't even want to rescue StandardError!
 
 ## More Self-Inflicted Fail
 
-Imagine a scenario where we're connecting to a 3rd-party API in our application. For example, we want our users to upload their cat photos to twitfaceagram. We definitely want to handle the scenarios where the connection times out or the DNS fails to resolve or the API returns bogus data. In all of these circumstances, we want to present a friendly message to the user that the application couldn't connect to the remote server.
+Imagine a scenario where we're connecting to a 3rd-party API in our application. For example, we want our users to upload their cat photos to twitfaceagram. We definitely want to handle the scenarios where the connection times out, or the DNS fails to resolve, or the API returns bogus data. In these circumstances, we want to present a friendly message to the user that the application couldn't connect to the remote server.
 
 ```ruby
 def upload_to_twitfaceagram
@@ -79,7 +79,7 @@ end
 
 Most of the time, this code will do what we expect. Something out of our control will go wrong, and it's appropriate to present the user with a friendly message. However, there's a major gotcha with this code: we're still rescuing many exceptions we're not aware of.
 
-Here's the full list of StandardErrors defined in ruby-core (2.0.0, but ruby-core 1.9 is not materially different):
+Here's an abridged list of StandardErrors defined in ruby-core 2.0.0 (1.9 is not materially different):
 
 ```ruby
 StandardError
@@ -119,7 +119,7 @@ In a fresh Rails 3.2.13 application, there are **[375 StandardErrors defined](ht
 
 Now let's say we're refactoring the API integration and we make a typo with a method name. What's going to happen?
 
-If we've wrapped the entire process in a `rescue => e` (which is rescuing StandardError) the NoMethodError is going to be swallowed and the graceful error handling code is going to be run instead. When we run our well written tests, they'll fail. But rather than raising a straight-forward NoMethodError, it'll look like there was an gracefully handled connectivity problem.
+If we've wrapped the entire process in a `rescue => e` (which is rescuing StandardError) the NoMethodError is going to be swallowed and our graceful error handling code is going to be run instead. When we run our well written tests, they'll fail. But rather than raising a straight-forward NoMethodError, it'll look like there was an gracefully handled connectivity problem.
 
 Now *that* is going to take some debugging.
 
