@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Autoloading, | Daniel Fone]]></title>
+  <title><![CDATA[Category: Autoloading | Daniel Fone]]></title>
   <link href="http://daniel.fone.net.nz/blog/categories/autoloading/atom.xml" rel="self"/>
   <link href="http://daniel.fone.net.nz/"/>
-  <updated>2013-05-28T04:30:47+12:00</updated>
+  <updated>2013-05-28T20:23:48+12:00</updated>
   <id>http://daniel.fone.net.nz/</id>
   <author>
     <name><![CDATA[Daniel Fone]]></name>
