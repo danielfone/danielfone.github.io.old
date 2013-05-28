@@ -1,0 +1,10 @@
+---
+layout: page
+title: "404 Not Found"
+---
+
+## Woah!
+
+**I've no idea how to get where you want to go.**
+
+Let's just raise and ActionController::RoutingError and see what happens…
