@@ -3,7 +3,7 @@ layout: post
 title: "Autoloading The Wrong Superclass with Rails"
 date: 2013-05-24 10:14
 comments: true
-categories: Autoloading, Debugging
+categories: Autoloading Debugging
 ---
 
 Autoloading in Ruby on Rails can cause all kinds of grief if you don't watch out. Here's a really quick tip to avoid hours of debugging down the track.
