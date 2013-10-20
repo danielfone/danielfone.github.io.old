@@ -4,7 +4,7 @@
   <title><![CDATA[Daniel Fone]]></title>
   <link href="http://daniel.fone.net.nz/atom.xml" rel="self"/>
   <link href="http://daniel.fone.net.nz/"/>
-  <updated>2013-10-20T22:16:25+13:00</updated>
+  <updated>2013-10-20T22:22:54+13:00</updated>
   <id>http://daniel.fone.net.nz/</id>
   <author>
     <name><![CDATA[Daniel Fone]]></name>
@@ -19,7 +19,8 @@
     <updated>2013-10-19T14:29:00+13:00</updated>
     <id>http://daniel.fone.net.nz/blog/2013/10/19/prototyping-web-applications-in-rails-4</id>
     <content type="html"><![CDATA[<p><em>From a presentation I gave at the at the <a href="https://twitter.com/chchruby">@chchruby</a> meetup on Thursday, 17th Oct, 2013.
-It was aimed at folks who were unfamiliar with Rails and bear in mind, this was a <strong>15 minute</strong> lightning talk.</em></p>
+It was aimed at folks who were unfamiliar with Rails and bear in mind, this was a <strong>15 minute</strong> lightning talk.
+I&rsquo;ve linked to specific commits below, but you can view the finished repo on <a href="https://github.com/danielfone/reimburser-wizard">GitHub</a>.</em></p>
 
 <h2>Background</h2>
 
