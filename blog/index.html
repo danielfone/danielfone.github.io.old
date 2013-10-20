@@ -9,7 +9,8 @@
   <meta name="author" content="Daniel Fone">
 
   
-  <meta name="description" content="tl;dr rescue Exception =&gt; e will turn your code into a brain eating zombie. The equivalent of rescue with an argument is rescue =&gt; e or rescue &hellip;">
+  <meta name="description" content="From a presentation I gave at the at the @chchruby meetup on Thursday, 17th Oct, 2013.
+It was aimed at folks who were unfamiliar with Rails and bear &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -98,7 +99,7 @@
   
 <ul class="main-navigation">
   <li><a href="/">About</a></li>
-  <li><a href="/blog/">Blog</a></li>
+  <li><a href="/blog/archives">Blog</a></li>
   <li><a href="/hire">Hire Me</a></li>
 </ul>
 
@@ -107,6 +108,184 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/19/prototyping-web-applications-in-rails-4/">Prototyping Web Applications in Rails 4</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-19T14:29:00+13:00" pubdate data-updated="true">Oct 19<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><em>From a presentation I gave at the at the <a href="https://twitter.com/chchruby">@chchruby</a> meetup on Thursday, 17th Oct, 2013.
+It was aimed at folks who were unfamiliar with Rails and bear in mind, this was a <strong>15 minute</strong> lightning talk.</em></p>
+
+<h2>Background</h2>
+
+<p>Tonight I want share a development style that Rails is very good at,
+but one that doesn&rsquo;t get a lot of love in the community.</p>
+
+<p>When I first discovered Ruby on Rails in my days of writing spaghetti PHP,
+I was amazed with how fast you could write basic web applications.
+However, as we become better developers and learn how to do things <em>properly</em>,
+we spend more and more time thinking about testing and decoupling and encapsulation and what to name our variables.
+In other words: no matter how good your tools are, doing things <em>well</em> is hard and takes time.</p>
+
+<p>So tonight I want to go back to the good old days of not knowing any better,
+and show you how little effort it takes to throw together a prototype web application using generators and scaffolds and lots of bad hacks.</p>
+
+<p>And although I&rsquo;d never want to see this kind of code in a production application,
+I&rsquo;m increasingly using this technique professionally
+to develop very fast, cost-effective prototypes for demonstration purposes.
+After all, it&rsquo;s much easier discussing the merit of an idea when everyone&rsquo;s looking at it on the screen,
+rather than everyone imagining something slightly different in their head.</p>
+
+<h2>The Idea</h2>
+
+<p>We&rsquo;re going to prototype a simple reimbursement system.
+We want to manage expense claims which consist of:</p>
+
+<ul>
+<li>A simple reference</li>
+<li>A &ldquo;payee&rdquo; to reimburse — usually an employee</li>
+<li>A series of lines detailing the expenses, amount, expense codes etc</li>
+<li>Any comments</li>
+</ul>
+
+
+<h2>The Application Skeleton</h2>
+
+<pre><code>$ rails new reimburser-wizard -T -m ~/Development/rails-templates/default-prototype.rb
+$ cd reimburser-wizard
+</code></pre>
+
+<p>The <code>rails new</code> command is pretty self-explanatory. It creates a new Rails application in a directory of the same name.
+The only two options I&rsquo;m specifying are:</p>
+
+<pre><code>-T, [--skip-test-unit]         # Skip Test::Unit files
+-m, [--template=TEMPLATE]      # Path to some application template (can be a filesystem path or URL)
+</code></pre>
+
+<p>You can check out my <a href="https://github.com/danielfone/rails-templates/blob/master/default-prototype.rb">prototyping template on Github</a>,
+but here&rsquo;s the basic rundown:</p>
+
+<ul>
+<li>Disable test generators</li>
+<li>Disable strong parameter protection</li>
+<li>Include the <a href="https://github.com/seyhunak/twitter-bootstrap-rails">twittter-bootstrap-rails gem</a> and run the generators</li>
+<li>Remove production and test configuration</li>
+<li>Add a partial for rendering error messages</li>
+</ul>
+
+
+<p>Next we&rsquo;ll copy in a simple layout (<a href="https://github.com/danielfone/reimburser-wizard/blob/fd4055e12704b800b7246d637209b5ea5e44005a/app/views/layouts/application.html.erb">app/views/layouts/application.html.erb</a>)
+and some bootstrap overrides (<a href="https://github.com/danielfone/reimburser-wizard/blob/fd4055e12704b800b7246d637209b5ea5e44005a/app/assets/stylesheets/bootstrap_and_overrides.css">app/assets/stylesheets/bootstrap_and_overrides.css</a>).</p>
+
+<h2>The Scaffolding</h2>
+
+<p>Here&rsquo;s where we really start building our prototype. Most of the work is done by Rails&#8217; scaffold generators.
+In this simple prototype, we&rsquo;ll model our domain with just two resources, a Reimbursement and an Employee.</p>
+
+<pre><code>$ rails generate scaffold Reimbursement reference:string payee:references comments:text data:text
+$ rails generate scaffold Employee name:string
+$ rake db:migrate
+</code></pre>
+
+<p>Our Reimbursement model is very simple: we&rsquo;ve got three regular attributes (<code>reference</code>, <code>payee</code> and <code>comments</code>),
+and a <code>data</code> field we&rsquo;ll use as a  meta-attribute for serializing whatever other attributes we need later.
+For the purposes of the demo, our Employee simply has a <code>name</code> attribute.
+The <code>db:migrate</code> rake task applies the <a href="https://github.com/danielfone/reimburser-wizard/tree/2c3fe4770203d66e25c41482deb78c19491062c8/db/migrate">generated migrations</a> to the sqlite database.
+As you can see in the <a href="https://github.com/danielfone/reimburser-wizard/commit/2c3fe4770203d66e25c41482deb78c19491062c8">commit</a>, the scaffold generators create a lot of code for us.</p>
+
+<p>Now we&rsquo;ll run some bootstrap helpers to replace the default rails views with <a href="https://github.com/danielfone/reimburser-wizard/commit/f4cd02940a06b1cf1972a71a557f11612b61db39">bootstrap themed views</a>.</p>
+
+<pre><code>$ rm app/assets/stylesheets/scaffolds.css.scss
+$ rails generate bootstrap:themed Reimbursements
+$ rails generate bootstrap:themed Employees
+</code></pre>
+
+<p>That&rsquo;s it for our scaffolding! The basic foundation of the prototype is in place.</p>
+
+<h2>Demo</h2>
+
+<p>Now&rsquo;s an excellent time to play with the application. Let&rsquo;s start the web server:</p>
+
+<pre><code>$ rails server
+</code></pre>
+
+<p>We&rsquo;ve barely written any code but we&rsquo;ve got a fully functional web application.
+Admittedly it&rsquo;s not very useful yet, but it&rsquo;s a powerful base to add functionality on to our prototype.
+Be sure to create a few <code>Employees</code> for our next step.</p>
+
+<h2>Making It Work</h2>
+
+<p>From this point, we&rsquo;ll write code rather than use generators. I&rsquo;ll link to diffs on GitHub.
+If you&rsquo;re new to Ruby on Rails, check out any unfamiliar methods in the <a href="http://api.rubyonrails.org/v4.0.0/">Ruby on Rails API docs</a>.</p>
+
+<h3><a href="https://github.com/danielfone/reimburser-wizard/commit/5a512719d522f4cf063632dfd1b6a18875db67aa">Change payee field to a select box</a></h3>
+
+<p>Naturally, we want our users to be able to select employees to reimburse.
+We&rsquo;ll use Rails&#8217; <a href="http://api.rubyonrails.org/v4.0.0/classes/ActionView/Helpers/FormOptionsHelper.html#method-i-collection_select">collection_select</a> helper for this.
+Check out the comments on the commit for more info.</p>
+
+<h3><a href="https://github.com/danielfone/reimburser-wizard/commit/f82821e4737a76964ba0b507f6596b381e60a77a">Change comment field to be multiline</a></h3>
+
+<p>A simple switch from a text_field to a text_area.
+<strong>Confession</strong>: after 5 years of professional Rails development,
+I didn&rsquo;t know about <a href="http://api.rubyonrails.org/v4.0.0/classes/ActionView/Helpers/TextHelper.html#method-i-simple_format">simple_format</a> until I was preparing this talk.</p>
+
+<h3><a href="https://github.com/danielfone/reimburser-wizard/commit/5e52fbc16f4e8609948ae214f47d82a1c6767cfd">Add LineItem table to Reimbursement view</a></h3>
+
+<p>The line items are the most complex part of this simple app.
+We&rsquo;ll start by adding a table on the Reimbursement view to present the line items.
+Since they don&rsquo;t exist yet, we&rsquo;ll &ldquo;stub&rdquo; the method on the Reimbursement model to return an empty array.</p>
+
+<h3><a href="https://github.com/danielfone/reimburser-wizard/commit/257d3f26b95881d384300fc18f6e9645a24d8432">Add LineItem fields to Reimbursement form</a></h3>
+
+<p>To create the line item fields on the reimbursement form, we&rsquo;ll use the magic of <code>fields_for</code>.
+This is a tremendously flexible helper, to the point that I&rsquo;ve never quite understood how it works
+despite using it in almost every application I write.</p>
+
+<p>We&rsquo;ll also setup our LineItem model, with a few attributes and some validations.</p>
+
+<h3><a href="https://github.com/danielfone/reimburser-wizard/commit/1ed5f8176087a1ca72917531792fc744f10f14bb">Allow LineItems to be persisted</a></h3>
+
+<p>Finally, we&rsquo;ll inform our Reimbursement model how to persist the line items.
+We&rsquo;re going to serialise the attributes as JSON in our data meta-attibute.
+We need to do a <a href="https://github.com/danielfone/reimburser-wizard/commit/1ed5f8176087a1ca72917531792fc744f10f14bb#diff-8153fe000751175f2ebf75b5659aa017R17">simple transformation</a> on the form data,
+but the rest is fairly straight forward.</p>
+
+<h2>Finished!</h2>
+
+<p>In just 15 minutes, we&rsquo;ve built a very simple prototype that contains some non-trivial functionality.</p>
+
+<p><img src="/images/2013-10-19-prototyping-web-applications-in-rails-4/form.png"></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1397,6 +1576,10 @@ Or — heaven forbid — talk to your users!</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/10/19/prototyping-web-applications-in-rails-4/">Prototyping Web Applications in Rails 4</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/05/28/why-you-should-never-rescue-exception-in-ruby/">Why You Should Never Rescue Exception in Ruby</a>
       </li>
     
@@ -1410,10 +1593,6 @@ Or — heaven forbid — talk to your users!</p>
     
       <li class="post">
         <a href="/blog/2013/05/24/persist-invalid-records-with-activerecord/">Persist Invalid Records With ActiveRecord</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/05/24/autoloading-the-wrong-superclass-with-rails-autoloading/">Autoloading the Wrong Superclass With Rails</a>
       </li>
     
   </ul>
