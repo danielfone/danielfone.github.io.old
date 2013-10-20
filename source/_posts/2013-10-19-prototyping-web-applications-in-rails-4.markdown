@@ -7,7 +7,8 @@ categories:
 ---
 
 _From a presentation I gave at the at the [@chchruby](https://twitter.com/chchruby) meetup on Thursday, 17th Oct, 2013.
-It was aimed at folks who were unfamiliar with Rails and bear in mind, this was a **15 minute** lightning talk._
+It was aimed at folks who were unfamiliar with Rails and bear in mind, this was a **15 minute** lightning talk.
+I've linked to specific commits below, but you can view the finished repo on [GitHub](https://github.com/danielfone/reimburser-wizard)._
 
 ## Background
 
