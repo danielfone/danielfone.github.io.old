@@ -4,7 +4,7 @@
   <title><![CDATA[Daniel Fone]]></title>
   <link href="http://daniel.fone.net.nz/atom.xml" rel="self"/>
   <link href="http://daniel.fone.net.nz/"/>
-  <updated>2013-10-20T22:22:54+13:00</updated>
+  <updated>2013-10-22T09:19:53+13:00</updated>
   <id>http://daniel.fone.net.nz/</id>
   <author>
     <name><![CDATA[Daniel Fone]]></name>
@@ -114,6 +114,9 @@ $ rails generate bootstrap:themed Employees
 
 <pre><code>$ rails server
 </code></pre>
+
+<p>Because we haven&rsquo;t set up our <a href="http://api.rubyonrails.org/v4.0.0/classes/ActionDispatch/Routing/Mapper/Base.html#method-i-root">root route</a>,
+you&rsquo;ll need to navigate to <a href="http://localhost:3000/reimbursements">http://localhost:3000/reimbursements</a> .</p>
 
 <p>We&rsquo;ve barely written any code but we&rsquo;ve got a fully functional web application.
 Admittedly it&rsquo;s not very useful yet, but it&rsquo;s a powerful base to add functionality on to our prototype.
