@@ -93,6 +93,9 @@ Now's an excellent time to play with the application. Let's start the web server
 
     $ rails server
 
+Because we haven't set up our [root route][root-api],
+you'll need to navigate to http://localhost:3000/reimbursements .
+
 We've barely written any code but we've got a fully functional web application.
 Admittedly it's not very useful yet, but it's a powerful base to add functionality on to our prototype.
 Be sure to create a few `Employees` for our next step.
@@ -154,3 +157,4 @@ In just 15 minutes, we've built a very simple prototype that contains some non-t
 [api-collection-select]: http://api.rubyonrails.org/v4.0.0/classes/ActionView/Helpers/FormOptionsHelper.html#method-i-collection_select
 [api-simple-format]: http://api.rubyonrails.org/v4.0.0/classes/ActionView/Helpers/TextHelper.html#method-i-simple_format
 [li-transform-attrs]: https://github.com/danielfone/reimburser-wizard/commit/1ed5f8176087a1ca72917531792fc744f10f14bb#diff-8153fe000751175f2ebf75b5659aa017R17
+[root-api]: http://api.rubyonrails.org/v4.0.0/classes/ActionDispatch/Routing/Mapper/Base.html#method-i-root
