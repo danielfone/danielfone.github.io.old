@@ -11,7 +11,7 @@ I'm almost embarrassed how stupid some of them are, but at the end of the day, r
 
 ## Level 0
 
-Converted `array` to `set` for fast lookups.
+[Converted](https://github.com/danielfone/stripe-ctf-level0/commit/fef0cfcba371dc29d9f0fd1f7bc0e1c9e1161b38#diff-1) `array` to `set` for fast lookups.
 
 https://github.com/danielfone/stripe-ctf-level0
 
@@ -24,7 +24,7 @@ https://github.com/danielfone/stripe-ctf-level1
 
 ## Level 2
 
-Exploit the fact that the test uses a fixed number of requests (and many more for "elephants" than "mice"), and limit each IP to 10 requests.
+Exploit the fact that the test uses a fixed number of requests (and many more for "elephants" than "mice"), and [limit each IP to 10 requests](https://github.com/danielfone/stripe-ctf-level2/commit/7f1171a8400c39ac691c54fa0cddbc9ea4202edb#diff-1).
 
 https://github.com/danielfone/stripe-ctf-level2
 
