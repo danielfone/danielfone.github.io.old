@@ -4,7 +4,7 @@
   <title><![CDATA[Daniel Fone]]></title>
   <link href="http://daniel.fone.net.nz/atom.xml" rel="self"/>
   <link href="http://daniel.fone.net.nz/"/>
-  <updated>2013-10-22T09:19:53+13:00</updated>
+  <updated>2014-01-31T12:27:30+13:00</updated>
   <id>http://daniel.fone.net.nz/</id>
   <author>
     <name><![CDATA[Daniel Fone]]></name>
@@ -12,6 +12,54 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Laziest possible solutions for Stripe's CTF]]></title>
+    <link href="http://daniel.fone.net.nz/blog/2014/01/31/laziest-possible-solutions-for-stripes-ctf/"/>
+    <updated>2014-01-31T12:24:00+13:00</updated>
+    <id>http://daniel.fone.net.nz/blog/2014/01/31/laziest-possible-solutions-for-stripes-ctf</id>
+    <content type="html"><![CDATA[<p>A good programmer is a lazy programmer right? Here&rsquo;s my solutions to Stripe&rsquo;s latest CTF.
+I&rsquo;m almost embarrassed how stupid some of them are, but at the end of the day, results matter.</p>
+
+<h2>Level 0</h2>
+
+<p>Converted <code>array</code> to <code>set</code> for fast lookups.</p>
+
+<p><a href="https://github.com/danielfone/stripe-ctf-level0">https://github.com/danielfone/stripe-ctf-level0</a></p>
+
+<h2>Level 1</h2>
+
+<p>Simply move the while loop into a single ruby process and use Digest::SHA1. Slow, but fast enough to beat the level.</p>
+
+<p><a href="https://github.com/danielfone/stripe-ctf-level1">https://github.com/danielfone/stripe-ctf-level1</a></p>
+
+<h2>Level 2</h2>
+
+<p>Exploit the fact that the test uses a fixed number of requests (and many more for &ldquo;elephants&rdquo; than &ldquo;mice&rdquo;), and limit each IP to 10 requests.</p>
+
+<p><a href="https://github.com/danielfone/stripe-ctf-level2">https://github.com/danielfone/stripe-ctf-level2</a></p>
+
+<h2>Level 3</h2>
+
+<p>Friends don&rsquo;t let friends use scala.</p>
+
+<ul>
+<li>Set up a basic sinatra server to implement the API</li>
+<li><a href="https://github.com/danielfone/stripe-ctf-level3/blob/master/search.rb#L24">Shell out to grep</a> to do actual searching. Single node, no index. O_o</li>
+</ul>
+
+
+<p><a href="https://github.com/danielfone/stripe-ctf-level3">https://github.com/danielfone/stripe-ctf-level3</a></p>
+
+<h2>Level 4</h2>
+
+<p>I was fortunate enough to reach this level early, and pass it before Stripe improved octopus. As such I passed it with <a href="https://github.com/danielfone/stripe-ctf-level4/commit/10be54c6915d1492791bb147a0c9daeb3c27003d">my first attempt</a>, simply by removing the failover (node0 becomes Single Point of Failure) and forwarding requests from the secondaries to the primary.</p>
+
+<p>The remaining commits are my futile attempts to pass this level after the SPOF check was added to the tests. Looking at the code for successful solutions, I can see I was on the right path but needed to invest more time into making my command forwarding more robust.</p>
+
+<p><a href="https://github.com/danielfone/stripe-ctf-level4">https://github.com/danielfone/stripe-ctf-level4</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Prototyping Web Applications in Rails 4]]></title>

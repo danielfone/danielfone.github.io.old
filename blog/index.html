@@ -9,8 +9,8 @@
   <meta name="author" content="Daniel Fone">
 
   
-  <meta name="description" content="From a presentation I gave at the at the @chchruby meetup on Thursday, 17th Oct, 2013.
-It was aimed at folks who were unfamiliar with Rails and bear &hellip;">
+  <meta name="description" content="A good programmer is a lazy programmer right? Here&rsquo;s my solutions to Stripe&rsquo;s latest CTF.
+I&rsquo;m almost embarrassed how stupid some of &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -108,6 +108,81 @@ It was aimed at folks who were unfamiliar with Rails and bear &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/01/31/laziest-possible-solutions-for-stripes-ctf/">Laziest Possible Solutions for Stripe&#8217;s CTF</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-31T12:24:00+13:00" pubdate data-updated="true">Jan 31<span>st</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>A good programmer is a lazy programmer right? Here&rsquo;s my solutions to Stripe&rsquo;s latest CTF.
+I&rsquo;m almost embarrassed how stupid some of them are, but at the end of the day, results matter.</p>
+
+<h2>Level 0</h2>
+
+<p>Converted <code>array</code> to <code>set</code> for fast lookups.</p>
+
+<p><a href="https://github.com/danielfone/stripe-ctf-level0">https://github.com/danielfone/stripe-ctf-level0</a></p>
+
+<h2>Level 1</h2>
+
+<p>Simply move the while loop into a single ruby process and use Digest::SHA1. Slow, but fast enough to beat the level.</p>
+
+<p><a href="https://github.com/danielfone/stripe-ctf-level1">https://github.com/danielfone/stripe-ctf-level1</a></p>
+
+<h2>Level 2</h2>
+
+<p>Exploit the fact that the test uses a fixed number of requests (and many more for &ldquo;elephants&rdquo; than &ldquo;mice&rdquo;), and limit each IP to 10 requests.</p>
+
+<p><a href="https://github.com/danielfone/stripe-ctf-level2">https://github.com/danielfone/stripe-ctf-level2</a></p>
+
+<h2>Level 3</h2>
+
+<p>Friends don&rsquo;t let friends use scala.</p>
+
+<ul>
+<li>Set up a basic sinatra server to implement the API</li>
+<li><a href="https://github.com/danielfone/stripe-ctf-level3/blob/master/search.rb#L24">Shell out to grep</a> to do actual searching. Single node, no index. O_o</li>
+</ul>
+
+
+<p><a href="https://github.com/danielfone/stripe-ctf-level3">https://github.com/danielfone/stripe-ctf-level3</a></p>
+
+<h2>Level 4</h2>
+
+<p>I was fortunate enough to reach this level early, and pass it before Stripe improved octopus. As such I passed it with <a href="https://github.com/danielfone/stripe-ctf-level4/commit/10be54c6915d1492791bb147a0c9daeb3c27003d">my first attempt</a>, simply by removing the failover (node0 becomes Single Point of Failure) and forwarding requests from the secondaries to the primary.</p>
+
+<p>The remaining commits are my futile attempts to pass this level after the SPOF check was added to the tests. Looking at the code for successful solutions, I can see I was on the right path but needed to invest more time into making my command forwarding more robust.</p>
+
+<p><a href="https://github.com/danielfone/stripe-ctf-level4">https://github.com/danielfone/stripe-ctf-level4</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1580,6 +1655,10 @@ Or — heaven forbid — talk to your users!</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/01/31/laziest-possible-solutions-for-stripes-ctf/">Laziest Possible Solutions for Stripe&#8217;s CTF</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/10/19/prototyping-web-applications-in-rails-4/">Prototyping Web Applications in Rails 4</a>
       </li>
     
@@ -1595,10 +1674,6 @@ Or — heaven forbid — talk to your users!</p>
         <a href="/blog/2013/05/27/meeting-inspiration-halfway/">Meeting Inspiration Halfway</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2013/05/24/persist-invalid-records-with-activerecord/">Persist Invalid Records With ActiveRecord</a>
-      </li>
-    
   </ul>
 </section>
 
@@ -1608,7 +1683,7 @@ Or — heaven forbid — talk to your users!</p>
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2013 - Daniel Fone -
+  Copyright &copy; 2014 - Daniel Fone -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

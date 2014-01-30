@@ -5,11 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: Security - Daniel Fone</title>
+  <title>Laziest possible solutions for Stripe's CTF - Daniel Fone</title>
   <meta name="author" content="Daniel Fone">
 
   
-  <meta name="description" content="Category: Security">
+  <meta name="description" content="A good programmer is a lazy programmer right? Here&rsquo;s my solutions to Stripe&rsquo;s latest CTF.
+I&rsquo;m almost embarrassed how stupid some of &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://daniel.fone.net.nzblog/categories/security">
+  <link rel="canonical" href="http://daniel.fone.net.nz/blog/2014/01/31/laziest-possible-solutions-for-stripes-ctf">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Daniel Fone" type="application/atom+xml">
@@ -106,36 +107,122 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: Security</h1>
+    
+      <h1 class="entry-title">Laziest Possible Solutions for Stripe's CTF</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-31T12:24:00+13:00" pubdate data-updated="true">Jan 31<span>st</span>, 2014</time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p>A good programmer is a lazy programmer right? Here&rsquo;s my solutions to Stripe&rsquo;s latest CTF.
+I&rsquo;m almost embarrassed how stupid some of them are, but at the end of the day, results matter.</p>
 
-  
-  <h2>2013</h2>
+<h2>Level 0</h2>
 
-<article>
-  
-<h1><a href="/blog/2013/05/20/a-better-way-to-manage-the-rails-secret-token/">A better way to manage the Rails secret token</a></h1>
-<time datetime="2013-05-20T07:35:00+12:00" pubdate><span class='month'>May</span> <span class='day'>20</span> <span class='year'>2013</span></time>
+<p>Converted <code>array</code> to <code>set</code> for fast lookups.</p>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/heroku/'>Heroku</a>, <a class='category' href='/blog/categories/security/'>Security</a></span>
-</footer>
+<p><a href="https://github.com/danielfone/stripe-ctf-level0">https://github.com/danielfone/stripe-ctf-level0</a></p>
+
+<h2>Level 1</h2>
+
+<p>Simply move the while loop into a single ruby process and use Digest::SHA1. Slow, but fast enough to beat the level.</p>
+
+<p><a href="https://github.com/danielfone/stripe-ctf-level1">https://github.com/danielfone/stripe-ctf-level1</a></p>
+
+<h2>Level 2</h2>
+
+<p>Exploit the fact that the test uses a fixed number of requests (and many more for &ldquo;elephants&rdquo; than &ldquo;mice&rdquo;), and limit each IP to 10 requests.</p>
+
+<p><a href="https://github.com/danielfone/stripe-ctf-level2">https://github.com/danielfone/stripe-ctf-level2</a></p>
+
+<h2>Level 3</h2>
+
+<p>Friends don&rsquo;t let friends use scala.</p>
+
+<ul>
+<li>Set up a basic sinatra server to implement the API</li>
+<li><a href="https://github.com/danielfone/stripe-ctf-level3/blob/master/search.rb#L24">Shell out to grep</a> to do actual searching. Single node, no index. O_o</li>
+</ul>
 
 
-</article>
+<p><a href="https://github.com/danielfone/stripe-ctf-level3">https://github.com/danielfone/stripe-ctf-level3</a></p>
 
+<h2>Level 4</h2>
+
+<p>I was fortunate enough to reach this level early, and pass it before Stripe improved octopus. As such I passed it with <a href="https://github.com/danielfone/stripe-ctf-level4/commit/10be54c6915d1492791bb147a0c9daeb3c27003d">my first attempt</a>, simply by removing the failover (node0 becomes Single Point of Failure) and forwarding requests from the secondaries to the primary.</p>
+
+<p>The remaining commits are my futile attempts to pass this level after the SPOF check was added to the tests. Looking at the code for successful solutions, I can see I was on the right path but needed to invest more time into making my command forwarding more robust.</p>
+
+<p><a href="https://github.com/danielfone/stripe-ctf-level4">https://github.com/danielfone/stripe-ctf-level4</a></p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Daniel Fone</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-31T12:24:00+13:00" pubdate data-updated="true">Jan 31<span>st</span>, 2014</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/10/19/prototyping-web-applications-in-rails-4/" title="Previous Post: Prototyping Web Applications in Rails 4">&laquo; Prototyping Web Applications in Rails 4</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -205,7 +292,10 @@
       var disqus_shortname = 'danielfone';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://daniel.fone.net.nz/blog/2014/01/31/laziest-possible-solutions-for-stripes-ctf/';
+        var disqus_url = 'http://daniel.fone.net.nz/blog/2014/01/31/laziest-possible-solutions-for-stripes-ctf/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
