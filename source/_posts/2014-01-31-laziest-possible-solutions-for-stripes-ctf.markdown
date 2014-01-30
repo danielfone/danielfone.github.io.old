@@ -17,7 +17,8 @@ https://github.com/danielfone/stripe-ctf-level0
 
 ## Level 1
 
-Simply move the while loop into a single ruby process and use Digest::SHA1. Slow, but fast enough to beat the level. 
+Simply move the while loop into a single ruby process and use Digest::SHA1. Slow, but fast enough to beat the level.
+This is the only level I had to write proper code for.
 
 https://github.com/danielfone/stripe-ctf-level1
 
