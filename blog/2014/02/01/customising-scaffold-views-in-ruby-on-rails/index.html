@@ -5,11 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Generating a Class Hierarchy in Ruby - Daniel Fone</title>
+  <title>Customising Scaffold Views in Ruby on Rails - Daniel Fone</title>
   <meta name="author" content="Daniel Fone">
 
   
-  <meta name="description" content="Here&rsquo;s a way to see what classes descend from a particular superclass in Ruby. You can use it to list all ActiveRecord models defined in your &hellip;">
+  <meta name="description" content="In Rails 3.0 and above, generators don&rsquo;t just look in the source root for templates,
+they also search for templates in other paths. And one of &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://daniel.fone.net.nz/blog/2013/05/27/generating-a-class-hierarchy-in-ruby">
+  <link rel="canonical" href="http://daniel.fone.net.nz/blog/2014/02/01/customising-scaffold-views-in-ruby-on-rails">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Daniel Fone" type="application/atom+xml">
@@ -110,7 +111,7 @@
   
   <header>
     
-      <h1 class="entry-title">Generating a Class Hierarchy in Ruby</h1>
+      <h1 class="entry-title">Customising Scaffold Views in Ruby on Rails</h1>
     
     
       <p class="meta">
@@ -126,92 +127,59 @@
   
 
 
-<time datetime="2013-05-27T12:59:00+12:00" pubdate data-updated="true">May 27<span>th</span>, 2013</time>
+<time datetime="2014-02-01T22:24:00+13:00" pubdate data-updated="true">Feb 1<span>st</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>Here&rsquo;s a way to see what classes descend from a particular superclass in Ruby. You can use it to list all ActiveRecord models defined in your application, every implementation on a particular base class, or whatever else might be of interest.</p>
+<div class="entry-content"><blockquote><p>In Rails 3.0 and above, generators don&rsquo;t just look in the source root for templates,
+they also search for templates in other paths. And one of them is lib/templates</p></blockquote>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p>This fact, taken from the <a href="http://guides.rubyonrails.org/generators.html#customizing-your-workflow-by-changing-generators-templates">RailsGuide on Generators</a>, makes it very easy for us to change the views that are generated when we run <code>rails generate scaffold …</code>. Let&rsquo;s say we want to change the scaffold&rsquo;s form template so that it uses a select box for a belongs_to relationship.</p>
+
+<p><img src="/images/2014-02-01-customising-scaffold-views-in-ruby-on-rails/select-box.png"></p>
+
+<p>Here are the steps we need to take:</p>
+
+<h3>Find the original template</h3>
+
+<p>These live in the lib/rails/generators/erb/scaffold/templates folder of the railties gem. To find the path of the gem, we can run <code>bundle show railties</code>. Alternatively we can run <code>bundle open railties</code> and navigate to the _form.html.erb file. Once we&rsquo;ve found this, we&rsquo;ll want to copy it.</p>
+
+<h3>Copy it into our application</h3>
+
+<p>As quoted above, generators will search for templates in lib/templates. For this template, we&rsquo;ll need to copy it into lib/templates/erb/scaffold/_form.erb.html within our application&rsquo;s root.</p>
+
+<h3>Change the template</h3>
+
+<p>At this point, we can make whatever changes we like! By way of illustration, here&rsquo;s one way to use a select box for a has_many relationship.</p>
+
+<figure class='code'><figcaption><span>lib/templates/erb/scaffold/_form.html.erb.diff </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&gt; puts ClassHierarchy.new ActionController::Base
-</span><span class='line'>ActionController::Base
-</span><span class='line'>  ApplicationController
-</span><span class='line'>    UsersController
-</span><span class='line'>    UserSessionsController
-</span><span class='line'>    OrdersController
-</span><span class='line'>    ...</span></code></pre></td></tr></table></div></figure>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='diff'><span class='line'><span class="gu">@@ -23,7 +23,7 @@</span>
+</span><span class='line'> &lt;% else -%&gt;
+</span><span class='line'>   &lt;%- if attribute.reference? -%&gt;
+</span><span class='line'>     &lt;%%= f.label :&lt;%= attribute.column_name %&gt; %&gt;&lt;br&gt;
+</span><span class='line'><span class="gd">-    &lt;%%= f.&lt;%= attribute.field_type %&gt; :&lt;%= attribute.column_name %&gt; %&gt;</span>
+</span><span class='line'><span class="gi">+    &lt;%%= f.collection_select :&lt;%= attribute.column_name %&gt;, &lt;%= attribute.name.camelize %&gt;.all, :id, :name, prompt: true  %&gt;</span>
+</span><span class='line'>   &lt;%- else -%&gt;
+</span><span class='line'>     &lt;%%= f.label :&lt;%= attribute.name %&gt; %&gt;&lt;br&gt;
+</span><span class='line'>     &lt;%%= f.&lt;%= attribute.field_type %&gt; :&lt;%= attribute.name %&gt; %&gt;
+</span></code></pre></td></tr></table></div></figure>
 
 
-<p>If you&rsquo;re using Rails, bear in mind that most of your classes won&rsquo;t be loaded by default in the development environment. You can get around this by manually requiring the files you&rsquo;re interested in:</p>
+<p>I&rsquo;ve uploaded an <a href="https://github.com/danielfone/rails4-custom-scaffold-test">example app</a> to github, where you can see the <a href="https://github.com/danielfone/rails4-custom-scaffold-test/blob/master/lib/templates/erb/scaffold/_form.html.erb">customised template</a> in full and also <a href="https://github.com/danielfone/rails4-custom-scaffold-test/blob/master/app/views/smart_users/_form.html.erb">the view</a> it generates.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Dir.glob File.join(Rails.root, 'app/models/**/*.rb'), &method(:require)</span></code></pre></td></tr></table></div></figure>
-
-
-<p>To use in your code, simply put <code>class_hierarchy.rb</code> somewhere that makes sense (perhaps /lib) and <code>require 'class_hierarchy'</code>.</p>
-
-<div><script src='https://gist.github.com/5654633.js?file=class_hierarchy.rb'></script>
-<noscript><pre><code>class ClassHierarchy
-
-  def initialize(root_class)
-    @root_class = root_class
-    @parent_class = @root_class.superclass
-    @tree = {}
-    generate_tree
-  end
-
-  def to_s
-    @tree.collect { |class_name, subclasses| branch_to_s class_name, subclasses }.join
-  end
-
-private
-
-  def generate_tree
-    subclasses.each { |subclass| subclass.insert_into_tree @tree, @parent_class }
-  end
-
-  def subclasses
-    @subclasses ||= all_classes.select { |klass| klass &lt; @root_class }.collect { |klass| ClassHierarchy::Subclass.new klass }
-  end
-
-  def all_classes
-    @all_classes ||= ObjectSpace.each_object(::Class)
-  end
-
-  def branch_to_s(class_name, subclasses, indent=0)
-    string = (&quot; &quot; * indent)
-    string &lt;&lt; class_name
-    string &lt;&lt; &quot;\n&quot;
-    string &lt;&lt; subclasses.collect { |subclass_name, subsubclasses| branch_to_s subclass_name, subsubclasses, indent + 2 }.join
-  end
-
-  class Subclass &lt; Struct.new(:subclass)
-
-    def superclasses
-      @superclasses ||= subclass.ancestors - subclass.included_modules
-    end
-
-    def insert_into_tree(tree, root_class)
-      classes = superclasses.take_while { |klass| klass != root_class }
-      classes.reverse.collect(&amp;:name).compact.inject(tree) { |memo,name| memo[name] ||= {} }
-    end
-
-  end
-
-end
-</code></pre></noscript></div>
-
-
-
+<p>Now when we run <code>rails generate scaffold user name:string user_type:references</code>, our form will use a helpful select box instead of an empty text field.</p>
 </div>
 
 
@@ -234,14 +202,8 @@ end
   
 
 
-<time datetime="2013-05-27T12:59:00+12:00" pubdate data-updated="true">May 27<span>th</span>, 2013</time>
+<time datetime="2014-02-01T22:24:00+13:00" pubdate data-updated="true">Feb 1<span>st</span>, 2014</time>
       
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/metaprogramming/'>Metaprogramming</a>
-  
-</span>
 
 
     </p>
@@ -255,10 +217,8 @@ end
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/05/27/meeting-inspiration-halfway/" title="Previous Post: Meeting Inspiration Halfway">&laquo; Meeting Inspiration Halfway</a>
+        <a class="basic-alignment left" href="/blog/2014/01/31/laziest-possible-solutions-for-stripes-ctf/" title="Previous Post: Laziest possible solutions for Stripe's CTF">&laquo; Laziest possible solutions for Stripe's CTF</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/05/28/why-you-should-never-rescue-exception-in-ruby/" title="Next Post: Why You Should Never Rescue Exception in Ruby">Why You Should Never Rescue Exception in Ruby &raquo;</a>
       
     </p>
   </footer>
@@ -339,8 +299,8 @@ end
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://daniel.fone.net.nz/blog/2013/05/27/generating-a-class-hierarchy-in-ruby/';
-        var disqus_url = 'http://daniel.fone.net.nz/blog/2013/05/27/generating-a-class-hierarchy-in-ruby/';
+        var disqus_identifier = 'http://daniel.fone.net.nz/blog/2014/02/01/customising-scaffold-views-in-ruby-on-rails/';
+        var disqus_url = 'http://daniel.fone.net.nz/blog/2014/02/01/customising-scaffold-views-in-ruby-on-rails/';
         var disqus_script = 'embed.js';
       
     (function () {

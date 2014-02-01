@@ -4,7 +4,7 @@
   <title><![CDATA[Daniel Fone]]></title>
   <link href="http://daniel.fone.net.nz/atom.xml" rel="self"/>
   <link href="http://daniel.fone.net.nz/"/>
-  <updated>2014-01-31T12:36:48+13:00</updated>
+  <updated>2014-02-01T23:00:01+13:00</updated>
   <id>http://daniel.fone.net.nz/</id>
   <author>
     <name><![CDATA[Daniel Fone]]></name>
@@ -12,6 +12,60 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Customising Scaffold Views in Ruby on Rails]]></title>
+    <link href="http://daniel.fone.net.nz/blog/2014/02/01/customising-scaffold-views-in-ruby-on-rails/"/>
+    <updated>2014-02-01T22:24:00+13:00</updated>
+    <id>http://daniel.fone.net.nz/blog/2014/02/01/customising-scaffold-views-in-ruby-on-rails</id>
+    <content type="html"><![CDATA[<blockquote><p>In Rails 3.0 and above, generators don&rsquo;t just look in the source root for templates,
+they also search for templates in other paths. And one of them is lib/templates</p></blockquote>
+
+<p>This fact, taken from the <a href="http://guides.rubyonrails.org/generators.html#customizing-your-workflow-by-changing-generators-templates">RailsGuide on Generators</a>, makes it very easy for us to change the views that are generated when we run <code>rails generate scaffold …</code>. Let&rsquo;s say we want to change the scaffold&rsquo;s form template so that it uses a select box for a belongs_to relationship.</p>
+
+<p><img src="http://daniel.fone.net.nz/images/2014-02-01-customising-scaffold-views-in-ruby-on-rails/select-box.png"></p>
+
+<p>Here are the steps we need to take:</p>
+
+<h3>Find the original template</h3>
+
+<p>These live in the lib/rails/generators/erb/scaffold/templates folder of the railties gem. To find the path of the gem, we can run <code>bundle show railties</code>. Alternatively we can run <code>bundle open railties</code> and navigate to the _form.html.erb file. Once we&rsquo;ve found this, we&rsquo;ll want to copy it.</p>
+
+<h3>Copy it into our application</h3>
+
+<p>As quoted above, generators will search for templates in lib/templates. For this template, we&rsquo;ll need to copy it into lib/templates/erb/scaffold/_form.erb.html within our application&rsquo;s root.</p>
+
+<h3>Change the template</h3>
+
+<p>At this point, we can make whatever changes we like! By way of illustration, here&rsquo;s one way to use a select box for a has_many relationship.</p>
+
+<figure class='code'><figcaption><span>lib/templates/erb/scaffold/_form.html.erb.diff </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='diff'><span class='line'><span class="gu">@@ -23,7 +23,7 @@</span>
+</span><span class='line'> &lt;% else -%&gt;
+</span><span class='line'>   &lt;%- if attribute.reference? -%&gt;
+</span><span class='line'>     &lt;%%= f.label :&lt;%= attribute.column_name %&gt; %&gt;&lt;br&gt;
+</span><span class='line'><span class="gd">-    &lt;%%= f.&lt;%= attribute.field_type %&gt; :&lt;%= attribute.column_name %&gt; %&gt;</span>
+</span><span class='line'><span class="gi">+    &lt;%%= f.collection_select :&lt;%= attribute.column_name %&gt;, &lt;%= attribute.name.camelize %&gt;.all, :id, :name, prompt: true  %&gt;</span>
+</span><span class='line'>   &lt;%- else -%&gt;
+</span><span class='line'>     &lt;%%= f.label :&lt;%= attribute.name %&gt; %&gt;&lt;br&gt;
+</span><span class='line'>     &lt;%%= f.&lt;%= attribute.field_type %&gt; :&lt;%= attribute.name %&gt; %&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I&rsquo;ve uploaded an <a href="https://github.com/danielfone/rails4-custom-scaffold-test">example app</a> to github, where you can see the <a href="https://github.com/danielfone/rails4-custom-scaffold-test/blob/master/lib/templates/erb/scaffold/_form.html.erb">customised template</a> in full and also <a href="https://github.com/danielfone/rails4-custom-scaffold-test/blob/master/app/views/smart_users/_form.html.erb">the view</a> it generates.</p>
+
+<p>Now when we run <code>rails generate scaffold user name:string user_type:references</code>, our form will use a helpful select box instead of an empty text field.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Laziest possible solutions for Stripe's CTF]]></title>

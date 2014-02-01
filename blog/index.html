@@ -9,8 +9,8 @@
   <meta name="author" content="Daniel Fone">
 
   
-  <meta name="description" content="A good programmer is a lazy programmer right? Here&rsquo;s my solutions to Stripe&rsquo;s latest CTF.
-I&rsquo;m almost embarrassed how stupid some of &hellip;">
+  <meta name="description" content="In Rails 3.0 and above, generators don&rsquo;t just look in the source root for templates,
+they also search for templates in other paths. And one of &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -108,6 +108,87 @@ I&rsquo;m almost embarrassed how stupid some of &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/01/customising-scaffold-views-in-ruby-on-rails/">Customising Scaffold Views in Ruby on Rails</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-01T22:24:00+13:00" pubdate data-updated="true">Feb 1<span>st</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><blockquote><p>In Rails 3.0 and above, generators don&rsquo;t just look in the source root for templates,
+they also search for templates in other paths. And one of them is lib/templates</p></blockquote>
+
+<p>This fact, taken from the <a href="http://guides.rubyonrails.org/generators.html#customizing-your-workflow-by-changing-generators-templates">RailsGuide on Generators</a>, makes it very easy for us to change the views that are generated when we run <code>rails generate scaffold …</code>. Let&rsquo;s say we want to change the scaffold&rsquo;s form template so that it uses a select box for a belongs_to relationship.</p>
+
+<p><img src="/images/2014-02-01-customising-scaffold-views-in-ruby-on-rails/select-box.png"></p>
+
+<p>Here are the steps we need to take:</p>
+
+<h3>Find the original template</h3>
+
+<p>These live in the lib/rails/generators/erb/scaffold/templates folder of the railties gem. To find the path of the gem, we can run <code>bundle show railties</code>. Alternatively we can run <code>bundle open railties</code> and navigate to the _form.html.erb file. Once we&rsquo;ve found this, we&rsquo;ll want to copy it.</p>
+
+<h3>Copy it into our application</h3>
+
+<p>As quoted above, generators will search for templates in lib/templates. For this template, we&rsquo;ll need to copy it into lib/templates/erb/scaffold/_form.erb.html within our application&rsquo;s root.</p>
+
+<h3>Change the template</h3>
+
+<p>At this point, we can make whatever changes we like! By way of illustration, here&rsquo;s one way to use a select box for a has_many relationship.</p>
+
+<figure class='code'><figcaption><span>lib/templates/erb/scaffold/_form.html.erb.diff </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='diff'><span class='line'><span class="gu">@@ -23,7 +23,7 @@</span>
+</span><span class='line'> &lt;% else -%&gt;
+</span><span class='line'>   &lt;%- if attribute.reference? -%&gt;
+</span><span class='line'>     &lt;%%= f.label :&lt;%= attribute.column_name %&gt; %&gt;&lt;br&gt;
+</span><span class='line'><span class="gd">-    &lt;%%= f.&lt;%= attribute.field_type %&gt; :&lt;%= attribute.column_name %&gt; %&gt;</span>
+</span><span class='line'><span class="gi">+    &lt;%%= f.collection_select :&lt;%= attribute.column_name %&gt;, &lt;%= attribute.name.camelize %&gt;.all, :id, :name, prompt: true  %&gt;</span>
+</span><span class='line'>   &lt;%- else -%&gt;
+</span><span class='line'>     &lt;%%= f.label :&lt;%= attribute.name %&gt; %&gt;&lt;br&gt;
+</span><span class='line'>     &lt;%%= f.&lt;%= attribute.field_type %&gt; :&lt;%= attribute.name %&gt; %&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I&rsquo;ve uploaded an <a href="https://github.com/danielfone/rails4-custom-scaffold-test">example app</a> to github, where you can see the <a href="https://github.com/danielfone/rails4-custom-scaffold-test/blob/master/lib/templates/erb/scaffold/_form.html.erb">customised template</a> in full and also <a href="https://github.com/danielfone/rails4-custom-scaffold-test/blob/master/app/views/smart_users/_form.html.erb">the view</a> it generates.</p>
+
+<p>Now when we run <code>rails generate scaffold user name:string user_type:references</code>, our form will use a helpful select box instead of an empty text field.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1427,204 +1508,9 @@ GITHUB_USERNAME: joesmith
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/05/19/desire-paths-in-web-ui/">Desire Paths in Web UI</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-05-19T16:50:00+12:00" pubdate data-updated="true">May 19<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Slides and a rough transcription from my lightning talk
-at the <a href="https://twitter.com/chchruby">@chchruby</a> meetup on Thursday, 16th May, 2013.</p>
-
-<h2>Desire Paths in Web UIs</h2>
-
-<p><img src="/images/desire-paths/slide.001.jpg"></p>
-
-<blockquote><p>Hi everyone, I&rsquo;m Daniel Fone
-I&rsquo;m a freelance Rails engineer.
-<a href="https://twitter.com/danielfone">@danielfone</a></p>
-
-<p>Before I start, I want to frame this by saying,
-this is more of a general &ldquo;philosophy of web application design&rdquo;
-than a technical talk
-so feel free to disagree — I don’t think there’s right and wrong —
-but hopefully these musings are helpful to some of you</p></blockquote>
-
-<p><img src="/images/desire-paths/slide.002.jpg"></p>
-
-<blockquote><p>Ok, so “desire paths in web UI”</p>
-
-<p>Who&rsquo;s heard of these before? Who knows what a desire path is?
-Ok, who knows what a web UI is?</p>
-
-<p>Good, we&rsquo;ve got something to start with :)</p>
-
-<p>Desire paths are something that everyone’s familiar with, you probably just didn’t know they had a name:</p>
-
-<p>Little story…
-  I’ve got two little kids, and sometimes <a href="http://www.kungfugrippe.com/post/631603366/mommy-needs-a-minute">Mummy needs a minute</a>
-  so daddy takes the kids for endless walks in the parks around where we live. There’s heaps.
-And everywhere we go we see these things:</p></blockquote>
-
-<p><img src="/images/desire-paths/slide.003.jpg">
-<img src="/images/desire-paths/slide.004.jpg">
-<img src="/images/desire-paths/slide.005.jpg">
-<img src="/images/desire-paths/slide.006.jpg"></p>
-
-<blockquote><p>Those tracks you see between trees, between paved footpaths etc.
-that’s a desire path</p>
-
-<p>When someone designed the paths, they figured everyone wanted to walk “here”
-turns out everyone wants to walk “over here”</p>
-
-<p>Totally different story time:</p></blockquote>
-
-<p><img src="/images/desire-paths/slide.007.jpg"></p>
-
-<blockquote><p> ages ago I built a search feature for a client&rsquo;s in-house logistics system.
-kinda omnisearch, searches all these different fields, fuzzy matches etc.
-Some time later I was working with one of the users while they were using this system
-and they were looking for a particular Order or Parcel or something
-and instead of using my amazing search
-they clicked on the “All Orders” tab, went ctrl-f and typed in the order number they were looking for.
-So they just used the browser’s search function.</p>
-
-<p>Turns out there was one field that was shown on the “All Orders” list that wasn’t shown on the search results page, so they were saving themselves an extra click by just going ctrl &ndash;> find on the orders list.</p>
-
-<p>I designing the app, I never would&rsquo;ve thought about this particular edge case.</p>
-
-<p>  And it got me thinking…
-  These two stories are actually about the same thing!</p></blockquote>
-
-<p><img src="/images/desire-paths/slide.008.jpg"></p>
-
-<blockquote><p>Because really, a desire path is
-the disconnect between a <strong>designer&rsquo;s intention</strong>
-and a <strong>user&rsquo;s desires</strong></p></blockquote>
-
-<p><img src="/images/desire-paths/slide.009.jpg"></p>
-
-<blockquote><p>Here’s the dilema for us as application developers</p>
-
-<p>When I’m sitting down with a client and they want this new-fangled in house management tool.</p>
-
-<ul>
-<li>firstly, I don’t have any idea what their users (usually their staff) actually want</li>
-<li>secondly, the technical managers I’m talking to usually only have a limited idea</li>
-<li>finally, if you talk with the future users about how they do their job, and how they want this application to work… they have no idea either until they start using it!</li>
-</ul>
-
-
-<p>Basically, no-one knows exactly what they want until it’s in-front of them,
-and then all they know they want something slightly different.</p>
-
-<p>So what are we to do?</p></blockquote>
-
-<p><img src="/images/desire-paths/slide.010.jpg"></p>
-
-<blockquote><p>Here’s my pet theory…</p>
-
-<p><strong>Build paths, not corridors.</strong></p>
-
-<p>Going back to our outdoor examples,
-paved footpaths leave users the opportunity to express desire paths
-they can take shortcuts when they know where they’re going</p>
-
-<p>Corridors don’t leave opportunities for desire paths. You go the way the architect intended you to.</p>
-
-<p>I know what you’re thinking at this point…</p></blockquote>
-
-<p><img src="/images/desire-paths/slide.011.jpg"></p>
-
-<blockquote><p>Yeah. paths, corridors, muddy tracks in the ground. WAT.</p>
-
-<p>So let’s put some legs on this.
-Technically, what does this look like?</p></blockquote>
-
-<p><img src="/images/desire-paths/slide.012.jpg"></p>
-
-<blockquote><ol>
-<li><p>Display more data, not less. Perhaps you have to hide it behind a “show more” link. But if you give it to the user, they can do something with it. This is the difference between omitting data and hiding it. I’ll come back to this in a sec.</p></li>
-<li><p>Give the users all their data. export via CSV/XML whatever. In the business world, if they can get data out of your system and into excel, they can do anything with it. Like people can do ANYTHING with excel.</p></li>
-<li><p>Expose APIs, same idea. Give them the data and let them find the ways they want to use it.</p></li>
-</ol>
-
-
-<p>There&rsquo;s a caveat though…</p></blockquote>
-
-<p><img src="/images/desire-paths/slide.013.jpg"></p>
-
-<blockquote><p>Letting users make desire paths doesn’t mean making none of your own paths in the UI.
-You’ve still got to make decisions.</p>
-
-<p>New users of your application need to see well marked paths so they learn how this information system works.
-But as users become comfortable, they want the space to find their own shortcuts etc.
-So it is good to <strong>hide</strong> all the unneeded data, but it’s not good to <strong>omit</strong> it entirely.</p></blockquote>
-
-<p><img src="/images/desire-paths/slide.014.jpg"></p>
-
-<blockquote><p>For bonus points…</p>
-
-<p>If you’re doing SaaS or whatever, i.e. building value into your own product
-You can leverage desire paths.</p>
-
-<p>And if you can analyse your logs, or implement some JS tracking,
-Or — heaven forbid — talk to your users!</p>
-
-<p>You can discover the odd use cases you’d never thought of and then build those out.</p>
-
-<p>So to recap:</p></blockquote>
-
-<p><img src="/images/desire-paths/slide.015.jpg"></p>
-
-<blockquote><ol>
-<li>Let your users figure out how to do cool stuff with your app.</li>
-<li>Figure out what cool stuff they’re doing</li>
-<li>And then make it easier for everyone</li>
-</ol>
-</blockquote>
-
-<p><img src="/images/desire-paths/slide.016.jpg"></p>
-
-<blockquote><p>But basically…</p>
-
-<p><strong>Build paths, not corridors.</strong></p>
-
-<p>Whatever that means for you.</p></blockquote>
-
-<p><img src="/images/desire-paths/slide.017.jpg"></p>
-
-<blockquote><p>THANKS</p></blockquote>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
+    
+      <a class="prev" href="/blog/page/2/">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -1656,6 +1542,10 @@ Or — heaven forbid — talk to your users!</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/02/01/customising-scaffold-views-in-ruby-on-rails/">Customising Scaffold Views in Ruby on Rails</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/01/31/laziest-possible-solutions-for-stripes-ctf/">Laziest Possible Solutions for Stripe&#8217;s CTF</a>
       </li>
     
@@ -1669,10 +1559,6 @@ Or — heaven forbid — talk to your users!</p>
     
       <li class="post">
         <a href="/blog/2013/05/27/generating-a-class-hierarchy-in-ruby/">Generating a Class Hierarchy in Ruby</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/05/27/meeting-inspiration-halfway/">Meeting Inspiration Halfway</a>
       </li>
     
   </ul>
