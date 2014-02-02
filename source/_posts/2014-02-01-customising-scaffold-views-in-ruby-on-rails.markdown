@@ -45,7 +45,7 @@ Now when we run `rails generate scaffold user name:string user_type:references`,
 
 ---
 
-_Edit: This questions was originally prompted by [a comment][comment] on another post, referencing a [StackOverflow question][soq]._
+_Edit: This question was originally prompted by [a comment][comment] on another post, referencing a [StackOverflow question][soq]._
 
 
 [guide]: http://guides.rubyonrails.org/generators.html#customizing-your-workflow-by-changing-generators-templates
