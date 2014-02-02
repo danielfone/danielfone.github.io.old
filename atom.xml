@@ -4,7 +4,7 @@
   <title><![CDATA[Daniel Fone]]></title>
   <link href="http://daniel.fone.net.nz/atom.xml" rel="self"/>
   <link href="http://daniel.fone.net.nz/"/>
-  <updated>2014-02-01T23:19:15+13:00</updated>
+  <updated>2014-02-02T13:11:08+13:00</updated>
   <id>http://daniel.fone.net.nz/</id>
   <author>
     <name><![CDATA[Daniel Fone]]></name>
@@ -67,7 +67,7 @@ they also search for templates in other paths. And one of them is lib/templates<
 
 <hr />
 
-<p><em>Edit: This questions was originally prompted by <a href="http://daniel.fone.net.nz/blog/2013/10/19/prototyping-web-applications-in-rails-4/#comment-1225579568">a comment</a> on another post, referencing a <a href="http://stackoverflow.com/questions/21486137/rails-scaffold-references-with-select-input-and-entity-label-with-generators/21496682">StackOverflow question</a>.</em></p>
+<p><em>Edit: This question was originally prompted by <a href="http://daniel.fone.net.nz/blog/2013/10/19/prototyping-web-applications-in-rails-4/#comment-1225579568">a comment</a> on another post, referencing a <a href="http://stackoverflow.com/questions/21486137/rails-scaffold-references-with-select-input-and-entity-label-with-generators/21496682">StackOverflow question</a>.</em></p>
 ]]></content>
   </entry>
   
